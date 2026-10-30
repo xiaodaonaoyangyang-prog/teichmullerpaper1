@@ -1,0 +1,8 @@
+/.lake
+/.claude
+/blueprint/print/
+/blueprint/web/
+/blueprint/src/*.log
+/blueprint/src/*.paux
+/remaining_sorries.*
+/sorries.json

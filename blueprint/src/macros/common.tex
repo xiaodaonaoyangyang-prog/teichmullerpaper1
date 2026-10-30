@@ -1,0 +1,47 @@
+% In this file you should put all LaTeX macros and settings to be used both by
+% the pdf version and the web version.
+% This should be most of your macros.
+
+% The theorem-like environments defined below are those that appear by default
+% in the dependency graph. See the README of leanblueprint if you need help to
+% customize this. 
+% The configuration below use the theorem counter for all those environments
+% (this is what the [theorem] arguments mean) and never resets it.
+% If you want for instance to number them within chapters then you can add
+% [chapter] at the end of the next line.
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+% Notation from the paper (theorem3_reorganized.tex), needed by content.tex.
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\Sone}{\mathbb{S}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\bmo}{\mathrm{BMO}}
+\newcommand{\vmo}{\mathrm{VMO}}
+\newcommand{\buc}{\mathrm{BUC}}
+\newcommand{\uc}{\mathrm{UC}}
+\newcommand{\cm}{\mathrm{CM}}
+\newcommand{\qs}{\mathrm{QS}}
+\newcommand{\sqs}{\mathrm{SQS}}
+\newcommand{\ssr}{\mathrm{SS}}
+\newcommand{\ssuc}{\mathrm{SS}_{\mathrm{uc}}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\RH}{\mathrm{RH}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\avg}[1]{\frac{1}{2\pi}\int_0^{2\pi} #1 \,d\varphi}

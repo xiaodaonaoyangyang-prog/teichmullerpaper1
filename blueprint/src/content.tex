@@ -1,0 +1,2810 @@
+% In this file you should put the actual content of the blueprint.
+% It will be used both by the web and the print version.
+% It should *not* include the \begin{document}
+%
+% If you want to split the blueprint content into several files then
+% the current file can be a simple sequence of \input. Otherwise It
+% can start with a \section or \chapter for instance.
+\section{Introduction}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The result}
+
+A sense-preserving homeomorphism $h$ of $\R$ is \emph{strongly symmetric},
+written $h\in\ssr(\R)$, if $h$ is locally absolutely continuous, $h'$ is an
+$A_\infty$-weight on $\R$, and $\log h'\in\vmo(\R)$. Writing
+$\ssuc(\R)=\{h\in\ssr(\R):h,h^{-1}\text{ uniformly continuous}\}$, Theorem~3 of
+\cite{WM} asserts that $h\in\ssuc(\R)$ implies $\mu_{e(h)}\in\calM_0(\U)$. The
+purpose of this paper is to prove that the uniform continuity hypothesis is not
+needed.
+
+\begin{theorem}\label{thm:main}
+	\uses{cor:real-loc, lem:de-loc, lem:delta-beta-new, lem:denom, prop:forward-to-theta, thm:forward, thm:theta-new, lem:isVanishingCarleson_of_le, lem:ainfty_imp_quasisymmetric, lem:ss_dilatation_sup_lt_one}
+	\lean{main_theorem}
+	For every $f\in\ssr(\R)$, the complex dilatation $\mu_{e(f)}$ of the
+	barycentric extension $e(f):\U\to\U$ satisfies
+	\[
+	\mu_{e(f)}\in\calM_0(\U),
+	\]
+	that is, $|\mu_{e(f)}(z)|^2\,\frac{dx\,dy}{y}$ is a vanishing Carleson measure
+	on $\U$.
+\end{theorem}
+
+\subsection{Context}
+
+Proposition~8 of Wei--Matsuzaki \cite{WM}, obtained through the heat kernel
+Beurling--Ahlfors extension, shows that for every $f\in\ssr(\R)$ there
+\emph{exists} some quasiconformal extension $F$ of $f$ with
+$\mu_F\in\calM_0(\U)$. Theorem~\ref{thm:main} shows that the Douady--Earle
+extension --- which is canonical, being conformally natural --- is always such
+an extension. On the unit disk the corresponding statement was proved by
+Shen--Wei \cite{SW}, Wu--Qi \cite{WQ} and Tang--Wei--Shen \cite{TWS} without any
+uniform continuity assumption, using the compactness of $\vmo(\Sone)$; that route is
+unavailable on the non-compact space $\R$, and is replaced here by the
+quantitative estimates of \S\S\ref{sec:tent}--\ref{sec:beta-carl}.
+
+\subsection{Outline of the proof}\label{ss:outline}
+
+The proof factors through the \emph{affine approximation coefficients}
+(beta-numbers) of $f$: for an interval $I\subset\R$,
+\[
+\beta_f(I)=\inf_{A\ \text{affine}}\frac1{|I|\,|f(I)|}\int_I|f-A|\,dt,
+\qquad
+\beta_f(x,y)=\beta_f\bigl([x-y,x+y]\bigr),
+\]
+and their scale average $\Theta_f(x,y)=\sum_{k\ge0}4^{-k}\beta_f(x,2^ky)$. The
+chain of implications is
+\[
+f\in\ssr(\R)
+\ \Longrightarrow\
+\beta_f^2\,\tfrac{dxdy}{y}\in\cm_0(\U)
+\ \Longrightarrow\
+\Theta_f^2\,\tfrac{dxdy}{y}\in\cm_0(\U)
+\ \Longrightarrow\
+|\mu_{e(f)}|^2\,\tfrac{dxdy}{y}\in\cm_0(\U).
+\]
+The last implication is pointwise and geometric, and needs only that $f$ be
+quasisymmetric; it is proved in \S\S\ref{sec:forward}--\ref{sec:beta-theta} and
+rests on the \emph{forward inequality} (Theorem~\ref{thm:forward}), which
+controls $|\mu_{e(h)}(z_0)|$ by the deviation of $h$ from an arbitrary affine
+map, weighted by the Poisson kernel and \emph{two} denominator factors; those
+two factors are what produce the dyadic decay $4^{-k}$ across scales.
+
+The first implication is where the hypotheses on $f'$ enter, and it is the
+analytic heart of the paper. Two statements are required,
+\begin{equation}\label{eq:two-inputs}
+	\text{(V)}\quad \sup_{|I|\le r}\|\beta_f\|_{T^2(I)}\xrightarrow[r\to0]{}0,
+	\qquad
+	\text{(C)}\quad \sup_{I}\|\beta_f\|_{T^2(I)}<\infty ,
+\end{equation}
+where $\|F\|_{T^2(J)}^2=\frac1{|J|}\iint_{Q_J}|F|^2\frac{dxdy}{y}$. Statement
+(V) is the vanishing at small scales and follows from $\log f'\in\vmo(\R)$;
+statement (C) is a uniform bound over boxes of \emph{all} sizes, for which the
+crude estimate $\beta_f\le1$ is useless --- it yields only
+$\|\beta_f\|_{T^2(J)}^2\lesssim\log(|J|/r_0)$ --- and for which the global
+hypothesis $f'\in A_\infty(\R)$ is genuinely needed.
+
+Sections \ref{sec:tent}--\ref{sec:beta-carl} prove (V) and (C) together, by an
+argument organised around a single scalar quantity, the normalised second
+difference
+\[
+\eps_h(x,y)=\frac{h(x+y)+h(x-y)-2h(x)}{h(x+y)-h(x-y)}\in(-1,1).
+\]
+There are three steps. First (\S\ref{sec:tent}), expanding $h$ in dyadic
+piecewise linear interpolants exhibits $\beta_h(I)$ as a superposition over
+scales of the $\eps_h$, with geometric weights; this is an exact identity, and
+replaces the square-function estimate of Dorronsoro that one would otherwise
+invoke. Second (\S\ref{sec:entropy}), a telescoping argument --- at every
+bisection, the logarithm of the arithmetic mean of $h'$ over an interval
+exceeds the average of the logarithms of the arithmetic means over its two
+halves by exactly $-\frac12\log(1-\eps_h^2)\ge\frac12\eps_h^2$, whereas the
+corresponding defect for $\log h'$ vanishes identically --- bounds
+the square function of $\eps_h$ over a Carleson box $Q_J$ by the
+arithmetic--geometric mean defect of $h'$ at the \emph{top} scale of the box
+alone. That defect is bounded by $\log A_0$ for an $A_\infty$-weight by
+definition, and is $O(\eta^2)$ when $\|\log h'\|_{\bmo}\le\eta$ locally, by
+John--Nirenberg; the two bounds give (C) and (V) respectively. Third
+(\S\ref{sec:beta-carl}), the two steps are combined using one application of
+the $A_\infty$ condition.
+
+A remark on the organisation: the compactness of normalized families of
+quasisymmetric maps is used three times below --- once for the non-degeneracy
+of a denominator in \S\ref{sec:forward}, twice for the localization estimates
+of \S\ref{ss:localization} --- and is therefore isolated once and for all in
+\S\ref{ss:compactness}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Notation and Preliminaries}\label{sec:prelim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Carleson measures on the upper half-plane}
+
+We follow the notation of Wei--Matsuzaki \cite{WM}.
+\begin{itemize}
+	\item $\U=\{z\in\C:\operatorname{Im}z>0\}$ is the upper half-plane,
+	$\Delta$ the unit disk and $S^1=\partial\Delta$;
+	$\rho_{\U}(z)=1/\operatorname{Im}z$ is the hyperbolic density on $\U$.
+	\item For a bounded interval $I\subset\R$, $Q_I=I\times(0,|I|]$ is the
+	associated Carleson box, and $\lambda I$ is the interval concentric with $I$ of
+	length $\lambda|I|$.
+	\item $\cm(\U)$ (resp.\ $\cm_0(\U)$) is the set of Carleson (resp.\ vanishing
+	Carleson) measures on $\U$: $\lambda\in\cm(\U)$ if
+	$\|\lambda\|_c:=\sup_I\lambda(Q_I)/|I|<\infty$, and $\lambda\in\cm_0(\U)$ if in
+	addition $\lambda(Q_I)/|I|\to0$ as $|I|\to0$, uniformly in the position of $I$.
+	\item $\calL(\U)$ is the Banach space of bounded measurable $\mu$ with
+	$d\lambda_\mu(z)=|\mu(z)|^2\rho_{\U}(z)\,dx\,dy\in\cm(\U)$, normed by
+	$\|\mu\|_{\calL}=\|\mu\|_\infty+\|\lambda_\mu\|_c^{1/2}$, and
+	$\calL_0(\U)=\{\mu\in\calL(\U):\lambda_\mu\in\cm_0(\U)\}$.
+	\item $M(\U)=\{\mu\in L^\infty(\U):\|\mu\|_\infty<1\}$,
+	$\calM(\U)=M(\U)\cap\calL(\U)$ and $\calM_0(\U)=M(\U)\cap\calL_0(\U)$.
+	\item For a measurable $F$ on $\U$ and a bounded interval $J$ we write
+	\[
+	\|F\|_{T^2(J)}:=\Bigl(\frac1{|J|}\iint_{Q_J}|F(x,y)|^2\,\frac{dx\,dy}{y}\Bigr)^{1/2},
+	\]
+	so that $|F|^2\frac{dxdy}{y}\in\cm(\U)$ means $\sup_J\|F\|_{T^2(J)}<\infty$, and
+	$\cm_0$ additionally requires $\|F\|_{T^2(J)}\to0$ as $|J|\to0$.
+\end{itemize}
+
+\subsection{\texorpdfstring{$\bmo$, $\vmo$ and $A_\infty$-weights}{BMO, VMO and A-infinity-weights}}\label{ss:weights}
+
+For a bounded interval $K$ and $u\in L^1_{\mathrm{loc}}(\R)$ we write
+$u_K=\frac1{|K|}\int_Ku$, and
+$\|u\|_{\bmo(K)}=\sup_{K'\subseteq K}\frac1{|K'|}\int_{K'}|u-u_{K'}|$, the
+supremum being over subintervals of $K$. The \emph{local $\bmo$ modulus} of $u$
+is
+\[
+\omega_u(r):=\sup_{|K|\le r}\|u\|_{\bmo(K)},\qquad r>0,
+\]
+and $u\in\vmo(\R)$ means $u\in\bmo(\R)$ with $\omega_u(r)\to0$ as $r\to0$; see
+Sarason \cite{Sar}.
+
+Throughout \S\S\ref{sec:tent}--\ref{sec:beta-carl}, $h:\R\to\R$ is an
+increasing homeomorphism which is locally absolutely continuous, with
+\[
+h'=w=e^{\alpha}>0\ \text{a.e.},\qquad
+w\in L^1_{\mathrm{loc}}(\R),\qquad \alpha=\log w\in L^1_{\mathrm{loc}}(\R),
+\]
+and for a bounded interval $K$,
+\[
+(w)_K=\frac1{|K|}\int_Kw\,dt,\qquad
+m_K:=e^{\alpha_K},\qquad\text{so that}\qquad m_K\le(w)_K
+\]
+by Jensen's inequality: $(w)_K$ and $m_K$ are the arithmetic and the geometric
+mean of $w$ over $K$. Note that $|h(K)|=\int_Kw=|K|\,(w)_K$.
+
+\begin{lemma}[Jensen's inequality for the two means]\label{lem:geomMean_le_mean}
+	\lean{geomMean_le_mean}
+	\leanok
+	For a bounded interval $K$ and a positive weight $w\in L^1(K)$, $m_K\le(w)_K$.
+\end{lemma}
+\begin{proof}
+	This is Jensen's inequality applied to the convex function $\exp$, as noted above.
+\end{proof}
+
+\begin{lemma}[Length of the image interval]\label{lem:imageLength_eq_mean}
+	\uses{lem:geomMean_le_mean}
+	\lean{imageLength_eq_mean}
+	\leanok
+	If $h$ is locally absolutely continuous and increasing with $h'=w$, then for $a<b$,
+	$h(b)-h(a)=(b-a)(w)_{[a,b]}$.
+\end{lemma}
+\begin{proof}
+	This is the identity $|h(K)|=\int_Kw=|K|\,(w)_K$ noted above, an instance of the
+	fundamental theorem of calculus for the locally absolutely continuous $h$.
+\end{proof}
+
+We also set
+\[
+I(x,y)=[x-y,x+y],\qquad I^-(x,y)=[x-y,x],\qquad I^+(x,y)=[x,x+y],
+\]
+so that $I^{\pm}(x,y)=I\bigl(x\pm\tfrac y2,\tfrac y2\bigr)$; and for a bounded
+interval $L$ we write $c_L$ for its centre, $r_L=|L|/2$ for its half-length,
+and $\calT_n(I)$ for the family of the $2^n$ closed intervals of length
+$2^{-n}|I|$ obtained from $I$ by $n$ successive bisections
+($\calT_0(I)=\{I\}$).
+
+We use the classical characterisations of the Muckenhoupt class $A_\infty(\R)$
+(see \cite[Ch.~VI]{Gar}, \cite{CF}, \cite[Ch.~IV]{GR}): for a weight $w>0$ the
+following are equivalent, with quantitatively related constants.
+\begin{enumerate}
+	\item[(A1)] There are $C_1\ge1$ and $\sigma\in(0,1]$ such that
+	$\dfrac{w(E)}{w(K)}\le C_1\Bigl(\dfrac{|E|}{|K|}\Bigr)^{\sigma}$
+	for every interval $K$ and every measurable $E\subseteq K$.
+	\item[(A2)] There is $A_0\ge1$ with $(w)_K\le A_0\,m_K$ for every interval $K$.
+	\item[(A3)] $w$ satisfies a reverse H\"older inequality $\RH_{1+\delta}$ for
+	some $\delta>0$.
+\end{enumerate}
+Implication (A3)$\Rightarrow$(A1) is H\"older's inequality, with
+$\sigma=\delta/(1+\delta)$. Only (A1) and (A2) are used below. Any of these
+conditions makes $w$ a doubling weight, and an $A_\infty$-derivative therefore
+forces $h$ to be strongly quasisymmetric, in particular $\rho$-quasisymmetric
+for some $\rho=\rho(h)$; see \cite{Jon}, \cite{HS}.
+
+
+\subsection{The Douady--Earle barycentric extension}\label{ss:de}
+
+Let $h$ be a sense-preserving homeomorphism. The Douady--Earle extension \cite{DE} provides a conformally natural quasiconformal extension of $h$ into the unit disk. We state the definition in both the unit disk and upper half-plane cases.
+
+\subsubsection*{\texorpdfstring{On the unit disk $\Delta$}{On the unit disk}}
+
+Let $g: S^1 \to S^1$ be a sense-preserving homeomorphism. The Douady--Earle extension $\mathrm{e}(g): \Delta \to \Delta$ is defined as follows: for each $Z \in \Delta$, $W = \mathrm{ex}(g)(Z)$ is the unique point in $\Delta$ satisfying the barycentric equation
+\[
+G_g(Z, W) = \frac{1}{2\pi}\int_{S^1} \frac{g(\zeta) - W}{1 - \bar{W}g(\zeta)} \cdot \frac{1 - |Z|^2}{|Z - \zeta|^2}\,|d\zeta| = 0.
+\]
+Here $\frac{1-|Z|^2}{|Z-\zeta|^2}$ is the Poisson kernel on $\Delta$.
+
+\subsubsection*{\texorpdfstring{On the upper half-plane $\U$}{On the upper half-plane}}
+
+Let $h: \R \to \R$ be an increasing homeomorphism. The Douady--Earle extension $e(h): \U \to \U$ is defined as follows: for each $z = x + iy \in \U$, $w = e(h)(z)$ is the unique point in $\U$ satisfying the barycentric equation
+\[
+H_h(z, w) = \frac{1}{2\pi}\int_{\R} \frac{h(t) - w}{h(t) - \bar{w}} \cdot \frac{z - \bar{z}}{|t - \bar{z}|^2}\,dt = 0.
+\]
+Equivalently, since $z - \bar{z} = 2iy$ and $|t - \bar{z}|^2 = (t-x)^2 + y^2$, this can be written in terms of the Poisson kernel $P_z(t) = \frac{1}{\pi}\frac{y}{(t-x)^2 + y^2}$ as
+\[
+\int_{\R} \frac{h(t) - w}{h(t) - \bar{w}} \cdot P_z(t)\,dt = 0.
+\]
+
+\subsubsection*{Relation via the Cayley transformation}
+
+The two formulations are related by the Cayley transformation $\gamma(z) = \frac{z-i}{z+i}$, which maps $\U \to \Delta$ and $\R \to S^1$. Setting $g = \gamma \circ h \circ \gamma^{-1}$, one has
+\[
+e(h) = \gamma^{-1} \circ \mathrm{e}(g) \circ \gamma.
+\]
+We record once the elementary transfer identity for the two families of
+normalized automorphisms. Writing $\sigma_W(Z)=\frac{Z-W}{1-\overline WZ}$ for
+$W\in\Delta$, the maps $u\mapsto\sigma_{\gamma(w)}(\gamma(u))$ and
+$u\mapsto\frac{u-w}{u-\bar w}$ are both conformal maps of $\U$ onto $\Delta$
+carrying $w\in\U$ to $0$, hence differ by a unimodular constant factor:
+\begin{equation}\label{eq:lambda}
+	\sigma_{\gamma(w)}\bigl(\gamma(u)\bigr)=\lambda(w)\,\frac{u-w}{u-\bar w},
+	\qquad
+	\lambda(w)=-\frac{|w+i|^2}{(w+i)^2},\qquad |\lambda(w)|=1 .
+\end{equation}
+The value of $\lambda(w)$ is obtained by differentiating both sides at $u=w$:
+the left-hand side gives $\gamma'(w)/(1-|\gamma(w)|^2)$ and the right-hand side
+$\lambda(w)/(w-\bar w)$, whence
+$\lambda(w)=2i\operatorname{Im}(w)\,\gamma'(w)/(1-|\gamma(w)|^2)$, which reduces
+to the stated expression using $\gamma'(w)=2i(w+i)^{-2}$ and
+$1-|\gamma(w)|^2=4\operatorname{Im}(w)|w+i|^{-2}$.
+
+In particular, at $z = i$ (so $\gamma(i) = 0$), the upper half-plane equation reduces to
+\[
+\int_{\R} \frac{h(t) - w_0}{h(t) - \bar{w}_0} \cdot \frac{dt}{t^2 + 1} = 0, \qquad w_0 = e(h)(i).
+\]
+Under $\zeta = \gamma(t) = e^{i\varphi}$ one has $\frac{dt}{t^2+1}=\frac12\,d\varphi$
+(this is computed in Step~1b of the proof of Theorem~\ref{thm:forward}), while by
+\eqref{eq:lambda} the integrand equals $\lambda(w_0)^{-1}\sigma_{W_0}(g(e^{i\varphi}))$
+with $W_0=\gamma(w_0)$. The equation therefore becomes the barycentric condition
+on the disk,
+\[
+\frac{1}{2\pi}\int_0^{2\pi}\sigma_{W_0}\bigl(g(e^{i\varphi})\bigr)\,d\varphi=0 ,
+\qquad\text{i.e.}\qquad \mathrm{e}(g)(0)=W_0 .
+\]
+Only in the normalized case $w_0=i$, that is $W_0=0$, does this reduce to the
+plain barycentre condition $\frac{1}{2\pi}\int_0^{2\pi}g(e^{i\varphi})\,d\varphi=0$;
+this normalization is imposed in Step~1a of the proof of
+Theorem~\ref{thm:forward} before the condition is used in that form.
+
+\begin{definition}[Cayley transform]\label{def:cayley}
+	\lean{cayley, cayleyCircle}
+	$\gamma(z)=\dfrac{z-i}{z+i}$ for $z\in\overline\U$, and its restriction to $\R$,
+	written on the circle as $\gamma(t)=e^{i(2\arctan t-\pi)}$.
+\end{definition}
+
+\begin{definition}[Inverse Cayley transform]\label{def:cayleyInv}
+	\lean{cayleyInv}
+	$\gamma^{-1}(\zeta)=i\dfrac{1+\zeta}{1-\zeta}$ for $\zeta\in\Delta\cup(S^1\setminus\{1\})$.
+\end{definition}
+
+\begin{lemma}[$\gamma$ and $\gamma^{-1}$ on the circle]\label{lem:cayleyCircle_coe}
+	\uses{def:cayley, def:cayleyInv}
+	\lean{cayleyCircle_coe, cayleyInv_cayleyCircle}
+	\leanok
+	The circle-valued map $\gamma(t)=e^{i(2\arctan t-\pi)}$ agrees with
+	$\gamma(z)=(z-i)/(z+i)$ at $z=t\in\R$, and $\gamma^{-1}$ inverts it:
+	$\operatorname{Re}\gamma^{-1}(\gamma(t))=t$.
+\end{lemma}
+\begin{proof}
+	Immediate from the definitions of $\gamma$ and $\gamma^{-1}$ and the identity
+	$\tan(\arctan t)=t$.
+\end{proof}
+
+\begin{definition}[M\"obius involution of the disk]\label{def:diskInvolution}
+	\lean{diskInvolution}
+	$\sigma_W(Z)=\dfrac{Z-W}{1-\overline WZ}$ for $W\in\Delta$, the automorphism of
+	$\Delta$ exchanging $0$ and $W$.
+\end{definition}
+
+\begin{lemma}[The transfer identity \eqref{eq:lambda}]\label{lem:cayley_involution_transfer}
+	\uses{def:cayley, def:diskInvolution}
+	\lean{lambdaFactor, cayley_involution_transfer, lambdaFactor_norm}
+	\leanok
+	For $w\in\U$, $\sigma_{\gamma(w)}(\gamma(u))=\lambda(w)\dfrac{u-w}{u-\bar w}$ with
+	$\lambda(w)=-|w+i|^2/(w+i)^2$ and $|\lambda(w)|=1$.
+\end{lemma}
+\begin{proof}
+	This is \eqref{eq:lambda}, proved above by differentiating both sides at $u=w$.
+\end{proof}
+
+\begin{definition}[Cayley conjugate]\label{def:IsCayleyConjugate}
+	\lean{IsCayleyConjugate}
+	$g=\gamma\circ h\circ\gamma^{-1}:S^1\to S^1$ is the Cayley conjugate of an
+	increasing homeomorphism $h$ of $\R$.
+\end{definition}
+
+\begin{lemma}[Existence of the Cayley conjugate; transfer of the extension]\label{lem:douadyEarle_cayley_transfer}
+	\uses{def:IsCayleyConjugate}
+	\lean{exists_cayleyConjugate, douadyEarle_cayley_transfer}
+	Every increasing homeomorphism $h$ of $\R$ has a Cayley conjugate $g$ on $S^1$,
+	and $e(h)=\gamma^{-1}\circ\mathrm e(g)\circ\gamma$.
+\end{lemma}
+\begin{proof}
+	This is the relation stated above via the Cayley transformation.
+\end{proof}
+
+\subsubsection*{Key properties}
+
+The Douady--Earle extension satisfies the following fundamental properties (see \cite{DE}):
+\begin{enumerate}
+	\item \textbf{Conformal naturality:} $e(\gamma_1 \circ h \circ \gamma_2) = \gamma_1 \circ e(h) \circ \gamma_2$ for all M\"obius transformations $\gamma_1, \gamma_2$.
+	\item \textbf{Real analyticity:} Both $e(h)$ and its inverse are real-analytic diffeomorphisms in the interior.
+	\item \textbf{Quasiconformality:} When $h$ is quasisymmetric, $e(h)$ is quasiconformal and bi-Lipschitz in the hyperbolic metric:
+	\[
+	\frac{1}{C(\rho)} \leq \frac{\rho_{\U}(w)\,|dw|}{\rho_{\U}(z)\,|dz|} \leq C(\rho), \quad w = e(h)(z),
+	\]
+	where $\rho$ is the quasisymmetric constant of $h$.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Normalization, Compactness and Localization}\label{sec:normal}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Conformal naturality and scale invariance}\label{ss:conf-nat}
+
+
+\begin{lemma}[Conformal Naturality]\label{lem:conf-nat}
+	\lean{conformal_naturality}
+	For a quasisymmetric homeomorphism $h$ and M\"obius transformations $\gamma_1, \gamma_2$,
+	\[
+	e(\gamma_1 \circ h \circ \gamma_2) = \gamma_1 \circ e(h) \circ \gamma_2.
+	\]
+\end{lemma}
+
+For $z = x + iy \in \U$ define
+\[
+h_z(t) = \frac{f(x + yt) - f(x)}{f(x+y) - f(x)}, \quad h_z(0) = 0,\ h_z(1) = 1.
+\]
+By conformal naturality:
+\[
+e(f)(z) = f(x) + (f(x+y) - f(x)) \cdot e(h_z)(i).
+\]
+
+\begin{lemma}[M\"obius invariance of the dilatation modulus]\label{lem:mobius_preserves_dilatation}
+	\uses{lem:conf-nat}
+	\lean{mobius_preserves_dilatation}
+	For real M\"obius $\gamma_1,\gamma_2$ of $\U$,
+	$|\mu_{e(\gamma_1\circ h\circ\gamma_2)}(z)|=|\mu_{e(h)}(\gamma_2(z))|$.
+\end{lemma}
+\begin{proof}
+	Immediate from Lemma~\ref{lem:conf-nat} and the chain rule for Wirtinger derivatives
+	applied to the M\"obius maps $\gamma_1,\gamma_2$, which are holomorphic.
+\end{proof}
+
+\begin{lemma}[The normalization identity]\label{lem:de_normalization}
+	\uses{lem:conf-nat}
+	\lean{de_normalization, dilatation_normalization}
+	With $h_z$ as above, $e(f)(z)=f(x)+(f(x+y)-f(x))\,e(h_z)(i)$, and consequently
+	$\mu_{e(f)}(z)=\mu_{e(h_z)}(i)$.
+\end{lemma}
+\begin{proof}
+	This is the identity displayed above, a direct consequence of conformal naturality
+	applied to the affine maps $B(z)=x+yz$ and $A(w)=(w-f(x))/(f(x+y)-f(x))$.
+\end{proof}
+
+
+The next lemma is not used in the sequel; we record it because it explains why
+the hypotheses defining $\ssr(\R)$ are invariant under the normalization just
+performed, and hence why it is legitimate to estimate $\mu_{e(f)}$ at every
+point of $\U$ by one and the same argument.
+
+\begin{lemma}[Scale Invariance of the BMO Norm]\label{lem:bmo-scale}
+	\uses{lem:normalizedMap_log_deriv, lem:bmoNorm_comp_affine}
+	\lean{bmo_norm_scale_invariance}
+	\[
+	\|\log h_z'\|_{\bmo(\R)} = \|\log f'\|_{\bmo(\R)}.
+	\]
+\end{lemma}
+
+\begin{lemma}[Logarithmic derivative of the normalized map]\label{lem:normalizedMap_log_deriv}
+	\lean{normalizedMap_log_deriv}
+	\leanok
+	$\log h_z'(t)=\log f'(x+yt)-\log\bigl(\tfrac1y\int_0^yf'(x+s)\,ds\bigr)$.
+\end{lemma}
+\begin{proof}
+	This is the computation of $\log h_z'$ at the start of the proof below.
+\end{proof}
+
+\begin{lemma}[Affine invariance of the BMO norm]\label{lem:bmoNorm_comp_affine}
+	\lean{bmoNorm_comp_affine, bmoNorm_add_const}
+	\leanok
+	For $\varphi(t)=at+b$ with $a\ne0$ and $u\in\bmo(\R)$, $\|u\circ\varphi\|_{\bmo}=\|u\|_{\bmo}$;
+	adding a constant to $u$ does not change $\|u\|_{\bmo}$.
+\end{lemma}
+\begin{proof}
+	This is the Claim proved in the body of the proof below.
+\end{proof}
+
+\begin{proof}
+	We shall now compute $\log h_z'(t)$. Since $h_z(t) = \frac{f(x+yt) - f(x)}{f(x+y) - f(x)}$, we have
+	\[
+	h_z'(t) = \frac{y \cdot f'(x+yt)}{f(x+y) - f(x)} = \frac{f'(x+yt)}{\frac{1}{y}\int_0^y f'(x+s)\,ds}.
+	\]
+	Then
+	\[
+	\log h_z'(t) = \log f'(x+yt) - \log\left(\frac{1}{y}\int_0^y f'(x+s)\,ds\right).
+	\]
+	Denote the second term by $C(x,y)$. Since adding a constant does not change the BMO norm, we have
+	\[
+	\|\log h_z'\|_{\bmo(\R)} = \|\log f'(x + yt)\|_{\bmo(\R)}.
+	\]
+	We need to show that the BMO norm is invariant under the affine map $\varphi(t) = x + yt$.
+	
+	\medskip
+	We claim that for any  $\varphi(t) = at + b$ with $a \neq 0$ and any $f \in \bmo(\R)$, setting $g = f \circ \varphi$, one has $\|g\|_{\bmo} = \|f\|_{\bmo}$.
+	
+	\medskip
+	\noindent\textit{Proof of Claim.}
+	Let $J$ be a bounded interval and set $I = \varphi(J)$, so $|I| = |a|\,|J|$.
+	
+	\textit{Step 1:}
+	By $u = at + b$, $du = |a|\,dt$:
+	\[
+	g_J = \frac{1}{|J|}\int_J f(at+b)\,dt = \frac{1}{|J|}\cdot\frac{1}{|a|}\int_I f(u)\,du = \frac{1}{|I|}\int_I f(u)\,du = f_I.
+	\]
+	
+	\textit{Step 2: }
+	Using the same substitution and $g_J = f_I$:
+	\[
+	\frac{1}{|J|}\int_J |g(t) - g_J|\,dt = \frac{1}{|J|}\int_J |f(at+b) - f_I|\,dt = \frac{1}{|J|}\cdot\frac{1}{|a|}\int_I |f(u) - f_I|\,du = \frac{1}{|I|}\int_I |f(u) - f_I|\,du.
+	\]
+	
+	\textit{Step 3: }
+	
+	\[
+	\|g\|_{\bmo} = \sup_J \frac{1}{|J|}\int_J |g - g_J| = \sup_I \frac{1}{|I|}\int_I |f - f_I| = \|f\|_{\bmo}.
+	\]
+	
+	\medskip
+	Applying the Claim with $\varphi(t) = x + yt$ (so $a = y > 0$, $b = x$) and $f$ replaced by $\log f'$:
+	\[
+	\|\log h_z'\|_{\bmo(\R)} = \|\log f' \circ \varphi\|_{\bmo(\R)} = \|\log f'\|_{\bmo(\R)}.
+	\]
+\end{proof}
+
+Therefore,
+\[
+\mu_{e(f)}(z) = \mu_{e(h_z)}(i),\qquad
+\|\log h_z'\|_{\bmo(\R)} = \|\log f'\|_{\bmo(\R)}.
+\]
+
+\subsection{Compactness of normalized quasisymmetric families}\label{ss:compactness}
+
+Three estimates below are instances of a single principle: a family of
+$\rho$-quasisymmetric circle homeomorphisms is compact as soon as a
+normalization has been imposed which rules out degeneration to a constant map.
+The three are the non-degeneracy of the denominator in the formula for the
+dilatation (Step~2 in the proof of Theorem~\ref{thm:forward}) and the two localization estimates of
+\S\ref{ss:localization}. We isolate the principle here, so that it is proved
+once.
+
+\begin{lemma}[Transfer to the circle]\label{lem:cayleyConj_quasisymmetric}
+	\uses{lem:douadyEarle_cayley_transfer}
+	\lean{cayleyConj_quasisymmetric}
+	The Cayley conjugate of a $\rho$-quasisymmetric increasing homeomorphism of $\R$
+	is $\rho'$-quasisymmetric on $S^1$, with $\rho'=\rho'(\rho)$.
+\end{lemma}
+\begin{proof}
+	This is Step~0 in the proof of Lemma~\ref{lem:compactness} below.
+\end{proof}
+
+\begin{definition}[Three-point normalized family]\label{def:threePointFamily}
+	\lean{threePointFamily}
+	For $\rho\ge1$ and positively oriented triples $\zeta,\zeta'$ of distinct points of
+	$S^1$, $\calN(\rho,\zeta,\zeta'):=\{G:S^1\to S^1\mid G\text{ sense-preserving, }
+	\rho\text{-quasisymmetric},\ G(\zeta_j)=\zeta_j'\ (j=1,2,3)\}$.
+\end{definition}
+
+\begin{lemma}[Compactness of three-point normalized families]\label{lem:compact_threePointFamily}
+	\uses{def:threePointFamily}
+	\lean{compact_threePointFamily}
+	$\calN(\rho,\zeta,\zeta')$ is compact in the topology of uniform convergence.
+\end{lemma}
+\begin{proof}
+	This is Step~1 in the proof of Lemma~\ref{lem:compactness} below.
+\end{proof}
+
+\begin{lemma}[Compactness]\label{lem:compactness}
+	\uses{lem:cayleyConj_quasisymmetric, lem:compact_threePointFamily}
+	\lean{compact_GFamily, compact_KFamily}
+	Let $\rho\ge1$.
+	\begin{enumerate}
+		\item[\rm(a)] The family
+		\[
+		\calG_\rho:=\Bigl\{g:S^1\to S^1\ \Big|\ g\text{ is a sense-preserving
+		}\rho\text{-quasisymmetric homeomorphism},\ \avg{g(e^{i\varphi})}=0\Bigr\}
+		\]
+		is compact in the topology of uniform convergence.
+		\item[\rm(b)] The family
+		\[
+		\calK_\rho:=\Bigl\{H:\overline{\R}\to\overline{\R}\ \Big|\ H\text{ is
+		}\rho\text{-quasisymmetric increasing},\ H(-1)=0,\ H(1)=1,\ H(\infty)=\infty\Bigr\}
+		\]
+		is compact in the topology of uniform convergence on $\overline{\R}$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	\emph{Step 0: transfer to the circle.}
+	Under the Cayley transform $\gamma(t)=\frac{t-i}{t+i}$, which maps
+	$\overline\R$ onto $S^1$, an increasing $\rho$-quasisymmetric homeomorphism $H$
+	of $\overline\R$ corresponds to the sense-preserving circle homeomorphism
+	$G=\gamma\circ H\circ\gamma^{-1}$, and the family of all such $G$ is uniformly
+	quasisymmetric on $S^1$ with a constant $\rho'=\rho'(\rho)$: a
+	$\rho$-quasisymmetric homeomorphism of $\overline\R$ extends to a
+	$K(\rho)$-quasiconformal self-map of $\U$ by \cite{BA}, and conjugating that
+	extension by the M\"obius map $\gamma$ preserves $K$; see \cite[Ch.~I]{LV}.
+	Conversely, every $\rho'$-quasisymmetric circle homeomorphism is the boundary
+	map of a $K(\rho')$-quasiconformal self-map of $\Delta$. Under this
+	correspondence the normalization in (b) becomes the three-point normalization
+	\[
+	G(\gamma(-1))=\gamma(0),\qquad G(\gamma(1))=\gamma(1),\qquad
+	G(\gamma(\infty))=\gamma(\infty),
+	\]
+	in which one positively oriented triple of distinct points of $S^1$ is carried
+	to another.
+	
+	\emph{Step 1: three-point normalized families are compact.}
+	Let $\rho'\ge1$ and let $(\zeta_1,\zeta_2,\zeta_3)$ and
+	$(\zeta_1',\zeta_2',\zeta_3')$ be positively oriented triples of distinct
+	points of $S^1$. We claim that
+	\[
+	\calN:=\bigl\{G:S^1\to S^1\ \big|\ G\ \text{sense-preserving,
+	}\rho'\text{-quasisymmetric},\ G(\zeta_j)=\zeta_j'\ (j=1,2,3)\bigr\}
+	\]
+	is compact in the topology of uniform convergence. Indeed, each $G\in\calN$ is
+	the boundary map of a $K$-quasiconformal self-homeomorphism $\widehat G$ of
+	$\overline\Delta$ with $K=K(\rho')$, and $\widehat G$ carries $(\zeta_j)$ to
+	$(\zeta_j')$. By the compactness theorem for quasiconformal mappings with a
+	three-point normalization (\cite[Ch.~II, \S5]{LV}, \cite[Ch.~II]{Ah}), the
+	family of all such $\widehat G$ is compact in the topology of uniform
+	convergence on $\overline\Delta$, and every limit is again a
+	$K$-quasiconformal self-homeomorphism of $\overline\Delta$: degeneration to a
+	constant is excluded precisely because three distinct boundary values are
+	prescribed. Restricting to $S^1$: every sequence in $\calN$ has a uniformly
+	convergent subsequence whose limit is a sense-preserving circle
+	homeomorphism. The $\rho'$-quasisymmetry condition is a family of non-strict
+	inequalities between values of $G$ at triples of points, and the normalization
+	consists of equalities; both therefore pass to uniform limits, so the limit
+	lies in $\calN$. Hence $\calN$ is compact.
+	
+	\emph{Step 2: proof of (b).}
+	Since $\gamma$ is a homeomorphism of the compact space $\overline\R$ onto
+	$S^1$, it and its inverse are uniformly continuous, so $H_n\to H$ uniformly on
+	$\overline\R$ if and only if $\gamma\circ H_n\circ\gamma^{-1}\to\gamma\circ
+	H\circ\gamma^{-1}$ uniformly on $S^1$. Thus (b) is exactly Step~1 transported
+	by $\gamma$.
+	
+	\emph{Step 3: proof of (a).}
+	Here no pointwise normalization is available, and the family of \emph{all}
+	$\rho'$-quasisymmetric circle homeomorphisms is genuinely not equicontinuous:
+	the M\"obius maps $\sigma_r(\zeta)=\frac{\zeta-r}{1-r\zeta}$, $0<r<1$, are
+	restrictions of conformal automorphisms of $\Delta$, hence uniformly
+	quasisymmetric, yet $\sigma_r(1)=1$ for all $r$ while $\sigma_r(\zeta)\to-1$ as
+	$r\to1$ for every $\zeta\neq1$. So Step~1 cannot simply be quoted; what
+	replaces the missing normalization is the condition $\avg{g}=0$, as follows.
+	
+	Let $(g_n)\subset\calG_\rho$ and fix the positively oriented triple
+	$(1,\omega,\omega^2)$ with $\omega=e^{2\pi i/3}$. Since $g_n$ is a
+	sense-preserving homeomorphism, $\bigl(g_n(1),g_n(\omega),g_n(\omega^2)\bigr)$
+	is again a positively oriented triple of distinct points, so by the
+	transitivity of $\operatorname{Aut}(\Delta)$ on such triples there is a unique
+	$\tau_n\in\operatorname{Aut}(\Delta)$ with
+	\[
+	\tau_n\bigl(g_n(1)\bigr)=1,\qquad
+	\tau_n\bigl(g_n(\omega)\bigr)=\omega,\qquad
+	\tau_n\bigl(g_n(\omega^2)\bigr)=\omega^2 .
+	\]
+	Put $G_n:=\tau_n\circ g_n$. Composing the $K(\rho)$-quasiconformal extension of
+	$g_n$ with the conformal map $\tau_n$ produces a $K(\rho)$-quasiconformal
+	extension of $G_n$, so $G_n$ is $\rho''$-quasisymmetric with
+	$\rho''=\rho''(\rho)$; that is, $G_n$ belongs to the family $\calN$ of Step~1
+	attached to $\rho''$ and to the triple $(1,\omega,\omega^2)$. Passing to a
+	subsequence, $G_n\to G$ uniformly, with $G$ a sense-preserving circle
+	homeomorphism.
+	
+	Write $\tau_n^{-1}(z)=e^{i\theta_n}\dfrac{z+a_n}{1+\overline{a_n}\,z}$ with
+	$\theta_n\in\R$ and $a_n\in\Delta$, and pass to a further subsequence so that
+	$\theta_n\to\theta$ and $a_n\to a\in\overline\Delta$.
+	
+	\emph{Case $|a|<1$.} Then $\tau_n^{-1}\to\tau^{-1}$ uniformly on
+	$\overline\Delta$, where
+	$\tau^{-1}(z)=e^{i\theta}\frac{z+a}{1+\bar az}\in\operatorname{Aut}(\Delta)$;
+	hence $g_n=\tau_n^{-1}\circ G_n\to\tau^{-1}\circ G=:g$ uniformly. The limit $g$
+	is a sense-preserving circle homeomorphism, the non-strict $\rho$-quasisymmetry
+	inequalities satisfied by the $g_n$ pass to the limit, and
+	$\avg{g}=\lim_n\avg{g_n}=0$. Thus $g\in\calG_\rho$.
+	
+	\emph{Case $|a|=1$.} Then, for $z\in\overline\Delta$ with $z\neq-a$,
+	\[
+	\frac{z+a_n}{1+\overline{a_n}\,z}\ \longrightarrow\ \frac{z+a}{1+\bar az}
+	=\frac{z+a}{\bar a\,(a+z)}=a ,
+	\]
+	uniformly on compact subsets of $\overline\Delta\setminus\{-a\}$. Since
+	$G_n\to G$ uniformly and $G$ is injective, $G(\zeta)=-a$ for at most one
+	$\zeta\in S^1$; hence $g_n(\zeta)=\tau_n^{-1}\bigl(G_n(\zeta)\bigr)\to
+	e^{i\theta}a$ for all but at most one $\zeta$. As $|g_n|\equiv1$, dominated
+	convergence gives
+	\[
+	0=\avg{g_n(e^{i\varphi})}\ \longrightarrow\ e^{i\theta}a\neq0 ,
+	\]
+	a contradiction. So this case does not occur.
+	
+	Every sequence in $\calG_\rho$ therefore has a subsequence converging uniformly
+	to an element of $\calG_\rho$; that is, $\calG_\rho$ is compact.
+\end{proof}
+
+The second ingredient is the continuous dependence of the barycentric extension
+on its boundary values. For $W\in\Delta$ write
+$\sigma_W(z)=\frac{z-W}{1-\overline Wz}$ for the M\"obius involution of
+$\Delta$ exchanging $0$ and $W$. Since the Poisson kernel of $\Delta$ at $Z=0$
+is identically $1$, the barycentric equation at $Z=0$ reads
+\begin{equation}\label{eq:bary-at-0}
+	G_g(0,W)=\avg{\sigma_W\bigl(g(e^{i\varphi})\bigr)}=0 ,
+\end{equation}
+and $\mathrm{e}(g)(0)$ is by definition its unique solution $W\in\Delta$.
+
+\begin{lemma}[Continuity of the extension at the origin]\label{lem:de-cont}
+	\lean{de_continuous_at_origin}
+	Let $g_n,g$ be $\rho$-quasisymmetric homeomorphisms of $S^1$ with $g_n\to g$
+	uniformly. Then $\mathrm{e}(g_n)(0)\to\mathrm{e}(g)(0)$. Equivalently, by
+	conformal naturality, the map $H\mapsto e(H)(i)$ is continuous on $\calK_\rho$.
+\end{lemma}
+
+\begin{proof}
+	Put $W_n=\mathrm{e}(g_n)(0)\in\Delta$. We first check that $(W_n)$ cannot
+	approach $\partial\Delta$. If it did, pass to a subsequence with
+	$W_n\to W_*\in S^1$. For every $z\in\overline\Delta$ with $z\neq W_*$,
+	\[
+	\sigma_{W_n}(z)\ \longrightarrow\ \frac{z-W_*}{1-\overline{W_*}z}
+	=\frac{z-W_*}{\overline{W_*}(W_*-z)}=-W_* ,
+	\]
+	and the convergence is uniform on compact subsets of
+	$\overline\Delta\setminus\{W_*\}$. Since $g$ is injective, $g(e^{i\varphi})=W_*$
+	for at most one $\varphi$, so $\sigma_{W_n}(g_n(e^{i\varphi}))\to-W_*$ for
+	almost every $\varphi$; as all these quantities are bounded by $1$, dominated
+	convergence and \eqref{eq:bary-at-0} give
+	\[
+	0=\avg{\sigma_{W_n}\bigl(g_n(e^{i\varphi})\bigr)}\ \longrightarrow\ -W_*\neq0 ,
+	\]
+	a contradiction. Hence $(W_n)$ stays in a compact subset of $\Delta$. If $W$ is
+	any subsequential limit, then $\sigma_{W_n}\circ g_n\to\sigma_W\circ g$
+	uniformly, so \eqref{eq:bary-at-0} passes to the limit and $W$ solves the
+	barycentric equation for $g$; by uniqueness $W=\mathrm{e}(g)(0)$. Therefore the
+	whole sequence converges to $\mathrm{e}(g)(0)$.
+\end{proof}
+
+\begin{corollary}\label{cor:compact-functionals}
+	\uses{lem:compactness, lem:de-cont}
+	\lean{compact_functionals}
+	Let $\Phi:\calK_\rho\to\R$ be any functional of the form
+	$\Phi(H)=\phi\bigl(e(H)(i)\bigr)$ with $\phi:\U\to\R$ continuous. Then $\Phi$
+	attains a finite maximum and minimum on $\calK_\rho$, and these depend only on
+	$\rho$ and $\phi$.
+\end{corollary}
+
+\begin{proof}
+	Immediate from Lemma~\ref{lem:compactness}(b) and Lemma~\ref{lem:de-cont}.
+\end{proof}
+
+\subsection{Localization of the Douady--Earle extension}\label{ss:localization}
+
+We now record the two geometric estimates that will be needed in
+\S\ref{sec:beta-theta}: the image point $e(h)(z_0)$ has imaginary part
+comparable to the length of the image of the interval below $z_0$, and its real
+part lies at a controlled distance from that image interval.
+
+
+\begin{lemma}[The normalized homeomorphism of the localization proofs]\label{lem:normalizedLoc_mem_KFamily}
+	\uses{lem:compactness}
+	\lean{normalizedLoc_mem_KFamily, normalizedLoc_de_value}
+	$H(t):=(h(x_0+y_0t)-h(x_0-y_0))/L$ lies in $\calK_\rho$, and
+	$e(H)(i)=(w_0-h(x_0-y_0))/L$.
+\end{lemma}
+\begin{proof}
+	This is the normalization constructed in the proofs of Lemma~\ref{lem:de-loc} and
+	Corollary~\ref{cor:real-loc} below.
+\end{proof}
+
+\begin{lemma}[DE Localization]\label{lem:de-loc}
+	\uses{cor:compact-functionals, lem:compactness, lem:normalizedLoc_mem_KFamily}
+	\lean{de_localization}
+	Let $h$ be a $\rho$-quasisymmetric increasing homeomorphism of $\R$,
+	$z_0=x_0+iy_0\in\U$, and $w_0=e(h)(z_0)=u_0+iv_0$. Let
+	\[
+	I_0=[x_0-y_0,x_0+y_0],
+	\qquad
+	L:=|h(I_0)|=h(x_0+y_0)-h(x_0-y_0),
+	\]
+	and
+	\[
+	a_{I_0}:=\frac{L}{|I_0|}=\frac{L}{2y_0}.
+	\]
+	Then there are constants $0<c_{\rm DE}(\rho)\le C_{\rm DE}(\rho)<\infty$,
+	depending only on $\rho$, with
+	\[
+	c_{\rm DE}(\rho)\,L\ \le\ v_0\ \le\ C_{\rm DE}(\rho)\,L,
+	\qquad\text{and}\qquad L=2a_{I_0}y_0 ;
+	\]
+	in particular $v_0\asymp_\rho L\asymp_\rho a_{I_0}y_0$.
+	If $h$ is locally absolutely continuous, then
+	\[
+	a_{I_0}=\frac1{|I_0|}\int_{I_0}h'(s)\,ds.
+	\]
+\end{lemma}
+
+\begin{proof}
+	Define
+	\[
+	H(t):=\frac{h(x_0+y_0t)-h(x_0-y_0)}{L}.
+	\]
+	Then $H$ is a $\rho$-quasisymmetric increasing homeomorphism of
+	$\R$, and
+	\[
+	H(-1)=0,\qquad H(1)=1,\qquad H(\infty)=\infty.
+	\]
+	We write
+	\[
+	B(z)=x_0+y_0z,
+	\qquad
+	A(w)=\frac{w-h(x_0-y_0)}{L}.
+	\]
+	Then $H=A\circ h\circ B$. Since $A$ and $B$ are real affine
+	maps of $\U$, conformal naturality gives
+	\[
+	e(H)=A\circ e(h)\circ B.
+	\]
+	In particular,
+	\[
+	e(H)(i)
+	=
+	A(e(h)(B(i)))
+	=
+	A(e(h)(z_0))
+	=
+	\frac{w_0-h(x_0-y_0)}{L}.
+	\]
+	Taking imaginary parts,
+	\[
+	\operatorname{Im}e(H)(i)=\frac{v_0}{L}.
+	\]
+	By Lemma~\ref{lem:compactness}(b) the family $\calK_\rho$ is compact, and by
+	Corollary~\ref{cor:compact-functionals} the functional
+	\[
+	\Phi:\calK_\rho\to(0,\infty),\qquad \Phi(H):=\operatorname{Im}e(H)(i),
+	\]
+	is continuous and attains its bounds. Since $e(H)(i)\in\U$ gives
+	$\Phi(H)>0$, we obtain
+	\[
+	0<c_{\rm DE}(\rho):=\min_{H\in\calK_\rho}\Phi(H)\le\Phi(H)\le
+	\max_{H\in\calK_\rho}\Phi(H)=:C_{\rm DE}(\rho)<\infty .
+	\]
+	Thus we get
+	\[
+	c_{\rm DE}(\rho)
+	\le
+	\frac{v_0}{L}
+	\le
+	C_{\rm DE}(\rho).
+	\]
+	Thus
+	\[
+	v_0\asymp_\rho L.
+	\]
+	
+	Finally,
+	\[
+	a_{I_0}y_0=\frac{L}{2y_0}\,y_0=\frac{L}{2},
+	\]
+	so
+	\[
+	L\asymp a_{I_0}y_0.
+	\]
+	Combining this with $v_0\asymp_\rho L$ yields
+	\[
+	v_0\asymp_\rho L\asymp_\rho a_{I_0}y_0.
+	\]
+	
+	If $h$ is locally absolutely continuous, then
+	\[
+	\int_{I_0}h'(s)\,ds
+	=
+	h(x_0+y_0)-h(x_0-y_0)
+	=
+	L.
+	\]
+	Therefore
+	\[
+	\frac1{|I_0|}\int_{I_0}h'(s)\,ds
+	=
+	\frac{L}{|I_0|}
+	=
+	a_{I_0}.
+	\]
+\end{proof}
+\begin{corollary}[Real-part localization]\label{cor:real-loc}
+	\uses{cor:compact-functionals, lem:compactness, lem:normalizedLoc_mem_KFamily}
+	\lean{real_part_localization}
+	Let $h$ be a $\rho$-quasisymmetric increasing homeomorphism of $\R$,
+	$z_0=x_0+iy_0\in\U$, and
+	\[
+	w_0=e(h)(z_0)=u_0+iv_0.
+	\]
+	Let
+	\[
+	I_0=[x_0-y_0,x_0+y_0],
+	\qquad
+	L=|h(I_0)|=h(x_0+y_0)-h(x_0-y_0).
+	\]
+	Then
+	\[
+	\operatorname{dist}(u_0,h(I_0))\le C_0(\rho)L.
+	\]
+\end{corollary}
+
+\begin{proof}
+	Set
+	\[
+	a=x_0-y_0,\qquad b=x_0+y_0.
+	\]
+	Define the normalized homeomorphism
+	\[
+	H(t):=\frac{h(x_0+y_0t)-h(a)}{L}.
+	\]
+	Then
+	\[
+	H(-1)=0,\qquad H(1)=1,\qquad H(\infty)=\infty,
+	\]
+	and $H$ is $\rho$-quasisymmetric. Write
+	\[
+	B(z)=x_0+y_0z,\qquad
+	A(w)=\frac{w-h(a)}{L}.
+	\]
+	Then
+	\[
+	H=A\circ h\circ B.
+	\]
+	By conformal naturality,
+	\[
+	e(H)=A\circ e(h)\circ B.
+	\]
+	In particular,
+	\[
+	e(H)(i)
+	=
+	A(e(h)(B(i)))
+	=
+	A(e(h)(z_0))
+	=
+	\frac{w_0-h(a)}{L}.
+	\]
+	Writing
+	\[
+	e(H)(i)=U+iV,
+	\]
+	we have
+	\[
+	U=\frac{u_0-h(a)}{L}.
+	\]
+	
+	Since
+	\[
+	h(I_0)=[h(a),h(b)]
+	\]
+	and
+	\[
+	A(h(I_0))=[0,1],
+	\]
+	we get
+	\[
+	\operatorname{dist}(U,[0,1])
+	=
+	\frac{1}{L}\operatorname{dist}(u_0,h(I_0)).
+	\]
+	Thus it remains to show that
+	\[
+	\operatorname{dist}(\operatorname{Re}e(H)(i),[0,1])
+	\]
+	is bounded by a constant depending only on $\rho$ for all normalized
+	$\rho$-quasisymmetric maps $H$ satisfying
+	\[
+	H(-1)=0,\qquad H(1)=1,\qquad H(\infty)=\infty.
+	\]
+	By Lemma~\ref{lem:compactness}(b) and Corollary~\ref{cor:compact-functionals},
+	the functional
+	\[
+	\Psi:\calK_\rho\to\R,\qquad
+	\Psi(H):=\operatorname{dist}\bigl(\operatorname{Re}e(H)(i),[0,1]\bigr),
+	\]
+	is continuous on the compact set $\calK_\rho$ and therefore attains its
+	maximum. Define
+	\[
+	C_0(\rho):=\max_{H\in\calK_\rho}
+	\operatorname{dist}\bigl(\operatorname{Re}e(H)(i),[0,1]\bigr)<\infty .
+	\]
+	For the normalized map $H$ constructed above,
+	\[
+	\operatorname{dist}(U,[0,1])\le C_0(\rho).
+	\]
+	Multiplying by $L$ gives
+	\[
+	\operatorname{dist}(u_0,h(I_0))
+	=
+	L\,\operatorname{dist}(U,[0,1])
+	\le
+	C_0(\rho)L.
+	\]
+	This proves the claim.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Forward Inequality}\label{sec:forward}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section proves the pointwise estimate on which everything else rests: the
+dilatation of $e(h)$ at a point $z_0$ is controlled by the deviation of $h$
+from an \emph{arbitrary} affine map, integrated against the Poisson kernel and
+damped by two denominator factors. The freedom in the choice of the affine map
+is what allows the estimate to be localized in \S\ref{sec:beta-theta}, and the
+two denominators are what produce the dyadic decay across scales.
+
+The proof has three steps. Step~1 normalizes the situation by conformal
+naturality so that $z_0=i$ and $e(h)(i)=i$, transfers it to the disk, and
+computes $\mu$ there by implicit differentiation of the barycentric equation;
+the outcome is the closed formula \eqref{eq:mu-formula}. Step~2 shows that the
+denominator of that formula is bounded below by a constant depending only on
+the quasisymmetry constant --- this is where the compactness of
+\S\ref{ss:compactness} is used. Step~3 compares the numerator with an affine
+map and transfers the resulting bound back to the half-plane.
+
+\begin{definition}[Normalization at $z_0$]\label{def:normalizeAt}
+	\lean{normalizeAt}
+	$\tilde h:=A\circ h\circ B$ where $B(z)=x_0+y_0z$, $A(w)=(w-u_0)/v_0$.
+\end{definition}
+
+\begin{lemma}[Step 1a: normalization]\label{lem:normalizeAt_fixes_I}
+	\uses{def:normalizeAt, lem:compactness, lem:mobius_preserves_dilatation}
+	\lean{normalizeAt_fixes_I, normalizeAt_dilatation}
+	$e(\tilde h)(i)=i$, and $|\mu_{e(h)}(z_0)|=|\mu_{e(\tilde h)}(i)|$.
+\end{lemma}
+\begin{proof}
+	This is Step~1a in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 1b: reduction to the disk]\label{lem:circleAvg_eq_zero_of_normalized}
+	\uses{lem:normalizeAt_fixes_I, lem:douadyEarle_cayley_transfer, lem:cayleyConj_quasisymmetric}
+	\lean{circleAvgReal_cayley, circleAvg_eq_zero_of_normalized}
+	Under $\zeta=\gamma(t)$, $d\varphi/2\pi=dt/(\pi(t^2+1))$, and the Cayley conjugate $g$ of $\tilde h$ satisfies $\avg{g(e^{i\varphi})}=0$.
+\end{lemma}
+\begin{proof}
+	This is Step~1b in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{definition}[The barycentric functions $F$, $G$, $\chi$]\label{def:baryFnUHP}
+	\lean{baryFnUHP, baryFnDisk, chiFactor}
+	$F(z,w):=i\int_{\R}\frac{\tilde h(t)-w}{\tilde h(t)-\bar w}P_z(t)\,dt$, $G(Z,W):=\avg{\frac{g(\zeta)-W}{1-\bar Wg(\zeta)}\frac{1-|Z|^2}{|Z-\zeta|^2}}$, $\chi(w):=|\gamma'(w)|/\gamma'(w)$.
+\end{definition}
+
+\begin{lemma}[Step 1c: implicit differentiation]\label{lem:dilatation_implicit_ratio}
+	\uses{def:baryFnUHP}
+	\lean{dilatation_implicit_ratio}
+	With $a=F_w,b=F_{\bar w},p=F_z,q=F_{\bar z}$ at the normalized point, $\mu_{e(\tilde h)}(i)=\dfrac{b\bar p-\bar aq}{b\bar q-\bar ap}$.
+\end{lemma}
+\begin{proof}
+	This is Step~1c in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 1d: $F=\chi\cdot G\circ\gamma$ and the four coefficients]\label{lem:baryFn_coefficients}
+	\uses{lem:dilatation_implicit_ratio, lem:circleAvg_eq_zero_of_normalized, lem:cayley_involution_transfer}
+	\lean{baryFnUHP_eq_chi_mul, baryFn_coefficients}
+	$F(z,w)=\chi(w)G(\gamma(z),\gamma(w))$, and at the normalized point $a=-\tfrac12$, $b=-\tfrac12\avg{g^2}$, $p=\tfrac12\avg{g\bar\sigma}$, $q=-\tfrac12\avg{g\sigma}$.
+\end{lemma}
+\begin{proof}
+	This is Step~1d in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{definition}[The numerator and denominator of $\mu$]\label{def:muNumerator}
+	\lean{muNumerator, muDenominator}
+	$N:=\avg{g\sigma}+\avg{g^2}\,\overline{\avg{g\bar\sigma}}$, $D:=\avg{g\bar\sigma}+\avg{g^2}\,\overline{\avg{g\sigma}}$.
+\end{definition}
+
+\begin{lemma}[Step 1e: closed formula for $\mu$]\label{lem:dilatation_closed_formula}
+	\uses{def:muNumerator, lem:baryFn_coefficients}
+	\lean{dilatation_closed_formula}
+	$\mu_{e(\tilde h)}(i)=-N/D$.
+\end{lemma}
+\begin{proof}
+	This is Step~1e (eq.~\eqref{eq:mu-formula}) in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 2a: the denominator in terms of $w_z$]\label{lem:muDenominator_eq_jacobian}
+	\uses{lem:dilatation_closed_formula}
+	\lean{muDenominator_eq_jacobian}
+	$|D|=4(|a|^2-|b|^2)|w_z|$.
+\end{lemma}
+\begin{proof}
+	This is Step~2a (eq.~\eqref{eq:denom}) in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 2b: lower bound for $|a|^2-|b|^2$]\label{lem:circleAvg_sq_lt_one}
+	\uses{lem:compactness, lem:cayleyConj_quasisymmetric}
+	\lean{circleAvgReal, lipschitz_circleAvg_sq, circleAvg_sq_lt_one}
+	On $\calG_{\rho'}$, $g\mapsto|\avg{g^2}|$ is continuous for uniform convergence, and $|\avg{g^2}|\le1-\delta(\rho)$ for some $\delta(\rho)>0$; hence $|a|^2-|b|^2\ge\delta(\rho)/4>0$.
+\end{lemma}
+\begin{proof}
+	This is Step~2b in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 2c: bi-hyperbolic-Lipschitz property]\label{lem:wirtZ_lower_bound}
+	\lean{de_bihyperbolic_lipschitz, wirtZ_lower_bound}
+	There is $C=C(\rho)\ge1$ with $C^{-1}\le\rho_{\U}(w)|dw|/(\rho_{\U}(z)|dz|)\le C$ for $w=e(\tilde h)(z)$; at the normalized point this gives $|w_z|\ge1/C(\rho)$.
+\end{lemma}
+\begin{proof}
+	This is Step~2c in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 2d: non-degeneracy of the denominator]\label{lem:muDenominator_lower_bound}
+	\uses{lem:muDenominator_eq_jacobian, lem:circleAvg_sq_lt_one, lem:wirtZ_lower_bound}
+	\lean{muDenominator_lower_bound}
+	$|D|\ge c(\rho):=\delta(\rho)/C(\rho)>0$.
+\end{lemma}
+\begin{proof}
+	This is Step~2d in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{definition}[Disk automorphism attached to an affine map]\label{def:IsDiskAut}
+	\lean{IsDiskAut, exists_diskAut_of_affine}
+	For $M(t)=\kappa t+\tau$ with $\kappa>0$, $m:=\gamma\circ L\circ\gamma^{-1}$ where $L=A\circ M\circ B$; $m$ is a M\"obius automorphism of $\Delta$, $m(e^{i\varphi})=\sum_{n\ge0}c_ne^{in\varphi}$.
+\end{definition}
+
+\begin{lemma}[Step 3a: non-negative frequencies]\label{lem:circleAvg_g_mul_id_le}
+	\uses{def:IsDiskAut}
+	\lean{circleAvg_diskAut_mul_id, circleAvg_g_mul_id_le}
+	$\avg{m(e^{i\varphi})\sigma(e^{i\varphi})}=0$, hence $|\avg{g\sigma}|\le\avg{|g-m|}$.
+\end{lemma}
+\begin{proof}
+	This is Step~3a in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Steps 3b--3c: bound for $|\avg{g^2}|$]\label{lem:circleAvg_sq_le_four}
+	\uses{def:IsDiskAut, lem:circleAvg_eq_zero_of_normalized}
+	\lean{circleAvg_diskAut, circleAvg_sq_le_four}
+	$\avg{m}=m(0)$, $\avg{m^2}=m(0)^2$, $m(0)=-\avg{g-m}$, and $|\avg{g^2}|\le4\avg{|g-m|}$.
+\end{lemma}
+\begin{proof}
+	This is Steps~3b--3c in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 3d: bound for $N$]\label{lem:muNumerator_le}
+	\uses{lem:circleAvg_g_mul_id_le, lem:circleAvg_sq_le_four}
+	\lean{muNumerator_le}
+	$|N|\le5\avg{|g-m|}$.
+\end{lemma}
+\begin{proof}
+	This is Step~3d in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{lemma}[Step 3e: transfer back to the half-plane]\label{lem:circleAvgReal_transfer}
+	\uses{lem:muNumerator_le, lem:muDenominator_lower_bound}
+	\lean{cayley_difference_identity, circleAvgReal_transfer}
+	For real $u,v$ and $w_0\in\U$, $|(u-w_0)/(u-\bar w_0)-(v-w_0)/(v-\bar w_0)|=2v_0|u-v|/(|u-\bar w_0||v-\bar w_0|)$, and consequently $\avg{|g-m|}=\int_{\R}\frac{2v_0|h(s)-M(s)|}{|h(s)-\bar w_0||M(s)-\bar w_0|}P_{z_0}(s)\,ds$.
+\end{lemma}
+\begin{proof}
+	This is Step~3e in the proof of Theorem~\ref{thm:forward} below.
+\end{proof}
+
+\begin{theorem}[Forward Inequality]\label{thm:forward}
+	\uses{lem:compactness, lem:normalizeAt_fixes_I, lem:circleAvg_eq_zero_of_normalized, lem:dilatation_implicit_ratio, lem:baryFn_coefficients, lem:dilatation_closed_formula, lem:muDenominator_eq_jacobian, lem:circleAvg_sq_lt_one, lem:wirtZ_lower_bound, lem:muDenominator_lower_bound, lem:circleAvg_g_mul_id_le, lem:circleAvg_sq_le_four, lem:muNumerator_le, lem:circleAvgReal_transfer}
+	\lean{forward_inequality}
+	Let $h$ be a $\rho$-quasisymmetric increasing homeomorphism on $\R$, $z_0 = x_0 + iy_0 \in \U$, $w_0 = e(h)(z_0) = u_0 + iv_0$. Then for \textit{any} affine map $M(t) = \kappa t + \tau$ with $\kappa > 0$,
+	\[
+	|\mu_{e(h)}(z_0)| \leq C(\rho) \int_{\R} \frac{2v_0\,|h(t) - M(t)|}{|h(t) - \bar{w}_0|\,|M(t) - \bar{w}_0|}\,P_{z_0}(t)\,dt,
+	\]
+	where $P_{z_0}(t) = \frac{1}{\pi}\frac{y_0}{|t - z_0|^2}$ is the Poisson kernel.
+\end{theorem}
+\begin{proof}
+	
+	
+	\textbf{Step 1: Normalization and calculation.}
+	
+	\medskip
+	\noindent\textit{1a. Normalization.}
+	Let $B(z) = x_0 + y_0 z$, $A(w) = (w - u_0)/v_0$, and $\tilde{h} = A \circ h \circ B$. By conformal naturality,
+	\[
+	e(\tilde{h})(i) = A(e(h)(B(i))) = A(e(h)(z_0)) = A(w_0) = \frac{w_0 - u_0}{v_0} = i,
+	\]
+	and since M\"obius transformations preserve the complex dilatation modulus,
+	\[
+	|\mu_{e(h)}(z_0)| = |\mu_{e(\tilde{h})}(i)|.
+	\]
+	
+	\medskip
+	\noindent\textit{1b. Reduction to the disk.}
+	The barycentric equation for $e(\tilde{h})$ at $z \in \U$ is
+	\[
+	\int_{\R} \frac{\tilde{h}(t) - w}{\tilde{h}(t) - \bar{w}} \cdot \frac{z - \bar{z}}{|t - \bar{z}|^2}\,dt = 0,
+	\]
+	where $w = e(\tilde{h})(z)$. By letting $z = i$ and $w = e(\tilde{h})(i) = i$ (so $\bar{w} = -i$, $\bar{z} = -i$):
+	\[
+	\int_{\R} \frac{\tilde{h}(t) - i}{\tilde{h}(t) + i} \cdot \frac{2i}{t^2 + 1}\,dt = 0.
+	\]
+	Thus:
+	\begin{equation}\label{eq:bary-H}
+		\int_{\R} \frac{\tilde{h}(t) - i}{\tilde{h}(t) + i} \cdot \frac{dt}{t^2 + 1} = 0.
+	\end{equation}
+	
+	Now let $\gamma(x) = \frac{x-i}{x+i}$ be the Cayley transformation mapping $\R \to S^1$ and $\U \to \Delta$, with $\gamma(i) = 0$. Set $g = \gamma \circ \tilde{h} \circ \gamma^{-1}: S^1 \to S^1$. We transfer \eqref{eq:bary-H} to the disk via $\zeta = \gamma(t) = e^{i\varphi}$, so $t = \gamma^{-1}(\zeta) = i\frac{1+\zeta}{1-\zeta}$.
+	
+	\textit{Integrand:}  $\frac{\tilde{h}(t) - i}{\tilde{h}(t) + i} = \gamma(\tilde{h}(t)) = g(\gamma(t)) = g(e^{i\varphi})$.
+	
+	\textit{Measure:}
+	\[
+	t^2 + 1 = \left(i\frac{1+\zeta}{1-\zeta}\right)^2 + 1 = \frac{-(1+\zeta)^2 + (1-\zeta)^2}{(1-\zeta)^2} = \frac{-4\zeta}{(1-\zeta)^2}, \qquad dt = \frac{2i}{(1-\zeta)^2}\,d\zeta,
+	\]
+	so
+	\[
+	\frac{dt}{t^2+1} = \frac{2i/(1-\zeta)^2}{-4\zeta/(1-\zeta)^2}\,d\zeta = \frac{-i}{2\zeta}\,d\zeta.
+	\]
+	Substituting $\zeta = e^{i\varphi}$, $d\zeta = ie^{i\varphi}\,d\varphi = i\zeta\,d\varphi$:
+	\[
+	\frac{dt}{t^2+1} = \frac{-i}{2\zeta} \cdot i\zeta\,d\varphi = \frac{1}{2}\,d\varphi.
+	\]
+	
+	Therefore \eqref{eq:bary-H} becomes :
+	\begin{equation}\label{eq:bary-disk}
+		\avg{g(e^{i\varphi})} = 0.
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{1c. Implicit function differentiation.}
+	Let $F(z, w) = 0$ denote the barycentric equation.
+	
+	Differentiating $F(z, \bar{z}, w(z,\bar{z}), \bar{w}(z,\bar{z})) = 0$ with respect to $z$ and $\bar{z}$:
+	\begin{align}
+		F_z + F_w \cdot w_z + F_{\bar{w}} \cdot \bar{w}_z &= 0, \label{eq:wirt-z}\\
+		F_{\bar{z}} + F_w \cdot w_{\bar{z}} + F_{\bar{w}} \cdot \bar{w}_{\bar{z}} &= 0. \label{eq:wirt-zbar}
+	\end{align}
+	Setting $a = F_w$, $b = F_{\bar{w}}$, $p = F_z$, $q = F_{\bar{z}}$:
+	\begin{align}
+		p + a\,w_z + b\,\overline{w_{\bar{z}}} &= 0, \tag{I}\\
+		q + a\,w_{\bar{z}} + b\,\overline{w_z} &= 0. \tag{II}
+	\end{align}
+	
+	Thus we have:
+	\[
+	\begin{pmatrix} a & b \\ \bar{b} & \bar{a} \end{pmatrix} \begin{pmatrix} w_z \\ \overline{w_{\bar{z}}} \end{pmatrix} = \begin{pmatrix} -p \\ -\bar{q} \end{pmatrix}.
+	\]
+	Solving them, we get:
+	\[
+	w_z = \frac{-p\bar{a} + b\bar{q}}{|a|^2 - |b|^2} = \frac{b\bar{q} - \bar{a}p}{|a|^2 - |b|^2}.
+	\]
+	and
+	\[
+	w_{\bar{z}} = \frac{-q\bar{a} + b\bar{p}}{|a|^2 - |b|^2} = \frac{b\bar{p} - \bar{a}q}{|a|^2 - |b|^2}.
+	\]
+	The complex dilatation is 
+	\begin{equation}\label{eq:mu-ratio}
+		\mu_{e(\tilde{h})}(i) = \frac{w_{\bar{z}}}{w_z} = \frac{b\bar{p} - \bar{a}q}{b\bar{q} - \bar{a}p}.
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{1d. Computing the coefficients $a, b, p, q$.}
+	We relate $F(z,w)$ to the disk barycentric function
+	\[
+	G(Z,W) = \frac{1}{2\pi}\int_{S^1} \frac{g(\zeta) - W}{1 - \bar{W}g(\zeta)} \cdot \frac{1 - |Z|^2}{|Z - \zeta|^2}\,|d\zeta|
+	\]
+	via the Cayley transformation. We claim that
+	\begin{equation}\label{eq:F-Phi-G}
+		F(z,w) = \chi(w) \cdot G(\gamma(z), \gamma(w)),
+		\qquad \chi(w) := \frac{|\gamma'(w)|}{\gamma'(w)} .
+	\end{equation}
+	Indeed, with the normalization of $F=H_{\tilde h}$ fixed in \S\ref{ss:de} and
+	$\frac{z-\bar z}{2\pi|t-\bar z|^2}=iP_z(t)$ we have
+	$F(z,w)=i\int_{\R}\frac{\tilde h(t)-w}{\tilde h(t)-\bar w}P_z(t)\,dt$. Applying
+	\eqref{eq:lambda} with $u=\tilde h(t)$ and writing $\zeta=\gamma(t)$,
+	$Z=\gamma(z)$, $W=\gamma(w)$,
+	\[
+	\frac{\tilde h(t)-w}{\tilde h(t)-\bar w}
+	=\lambda(w)^{-1}\,\sigma_{W}\bigl(\gamma(\tilde h(t))\bigr)
+	=\lambda(w)^{-1}\,\frac{g(\zeta)-W}{1-\overline Wg(\zeta)} ,
+	\]
+	while the conformal invariance of harmonic measure gives
+	$P_z(t)\,dt=\frac{1}{2\pi}\frac{1-|Z|^2}{|Z-\zeta|^2}|d\zeta|$. Hence
+	$F(z,w)=i\lambda(w)^{-1}G(\gamma(z),\gamma(w))$, and
+	\[
+	i\lambda(w)^{-1}=-i\,\frac{(w+i)^2}{|w+i|^2}
+	=\frac{2/|w+i|^{2}}{2i/(w+i)^{2}}
+	=\frac{|\gamma'(w)|}{\gamma'(w)}=\chi(w),
+	\]
+	which is \eqref{eq:F-Phi-G}. (The factor $i$ coming from
+	$\frac{z-\bar z}{2\pi|t-\bar z|^2}$ is what makes the constant come out exactly
+	as $\chi$; had $F$ been normalized as $\int\frac{\tilde h-w}{\tilde h-\bar w}P_z\,dt$
+	one would get $-i\chi$ instead. Nothing below depends on this: replacing $F$ by
+	$cF$ with $c$ constant multiplies $a,b,p,q$ by $c$ and leaves the ratio
+	$\frac{b\bar p-\bar aq}{b\bar q-\bar ap}$ unchanged.)
+	At $w = i$:
+	\[
+	\gamma(i) = 0, \qquad \gamma'(i) = \frac{2i}{(2i)^2} = -\frac{i}{2}, \qquad \chi(i) = \frac{|\gamma'(i)|}{\gamma'(i)} = \frac{1/2}{-i/2} = i.
+	\]
+	
+	We first compute the derivatives of $G$ at $(Z,W) = (0,0)$. Since $G(0,0) = \avg{g} = 0$ by \eqref{eq:bary-disk}:
+	
+	\textit{Derivative with respect to $W$:}
+	\[
+	\frac{\partial}{\partial W}\left[\frac{g - W}{1 - \bar{W}g}\right] = \frac{-(1 - \bar{W}g)}{(1 - \bar{W}g)^2} \xrightarrow{(0,0)} -1 \quad\Longrightarrow\quad G_W(0,0) = -\avg{1} = -1.
+	\]
+	
+	\textit{Derivative with respect to $\bar{W}$:}
+	\[
+	\frac{\partial}{\partial \bar{W}}\left[\frac{g - W}{1 - \bar{W}g}\right] = \frac{(g - W)g}{(1 - \bar{W}g)^2} \xrightarrow{(0,0)} g(\zeta)^2 \quad\Longrightarrow\quad G_{\bar{W}}(0,0) = \avg{g(e^{i\varphi})^2}.
+	\]
+	
+	\textit{Derivative with respect to $Z$:} Only the Poisson kernel $P(Z,\zeta) = \frac{1-|Z|^2}{|Z-\zeta|^2}$ depends on $Z$:
+	\[
+	\frac{\partial P}{\partial Z} = \frac{-\bar{Z}|Z-\zeta|^2 - (1-|Z|^2)(\bar{Z}-\bar{\zeta})}{|Z-\zeta|^4} \xrightarrow{Z=0} \bar{\zeta} \quad\Longrightarrow\quad G_Z(0,0) = \avg{g(\zeta)\bar{\zeta}}.
+	\]
+	
+	\textit{Derivative with respect to $\bar{Z}$:}
+	\[
+	\frac{\partial P}{\partial \bar{Z}} \xrightarrow{Z=0} \zeta \quad\Longrightarrow\quad G_{\bar{Z}}(0,0) = \avg{g(\zeta)\zeta}.
+	\]
+	
+	We also need the derivatives of $\chi$ at $w = i$. By the computation above,
+	$\chi(w)=-i\frac{(w+i)^2}{|w+i|^2}=\frac{w+i}{i(\bar{w}-i)}$, so that
+	\[
+	\chi_w(i) = \frac{1}{i(\bar{w}-i)}\bigg|_{w=i} = \frac{1}{i(-2i)} = \frac{1}{2}, \qquad \chi_{\bar{w}}(i) = -\frac{w+i}{i(\bar{w}-i)^2}\bigg|_{w=i} = -\frac{2i}{i(-2i)^2} = \frac{1}{2}.
+	\]
+	
+	Setting $\sigma(\zeta) = \zeta$ and $\bar{\sigma}(\zeta) = \bar{\zeta}$, we compute:
+	\begin{align*}
+		a = F_w &= \chi_w \cdot G(0,0) + \chi(i) \cdot G_W(0,0) \cdot \gamma'(i) = 0 + i \cdot (-1) \cdot \left(-\frac{i}{2}\right) = -\frac{1}{2},\\[4pt]
+		b = F_{\bar{w}} &= \chi_{\bar{w}} \cdot G(0,0) + \chi(i) \cdot G_{\bar{W}}(0,0) \cdot \overline{\gamma'(i)} = 0 + i \cdot \avg{g^2} \cdot \frac{i}{2} = -\frac{1}{2}\avg{g(e^{i\varphi})^2},\\[4pt]
+		p = F_z &= \chi(i) \cdot G_Z(0,0) \cdot \gamma'(i) = i \cdot \avg{g\bar{\sigma}} \cdot \left(-\frac{i}{2}\right) = \frac{1}{2}\avg{g(e^{i\varphi})\bar{\sigma}(e^{i\varphi})},\\[4pt]
+		q = F_{\bar{z}} &= \chi(i) \cdot G_{\bar{Z}}(0,0) \cdot \overline{\gamma'(i)} = i \cdot \avg{g\sigma} \cdot \frac{i}{2} = -\frac{1}{2}\avg{g(e^{i\varphi})\sigma(e^{i\varphi})}.
+	\end{align*}
+	
+	\medskip
+	\noindent\textit{1e. The formula for $\mu$.}
+	Substituting into \eqref{eq:mu-ratio} and noting that $a = -1/2$, so $\bar{a} = -1/2$, we can get:
+	\[
+	\avg{g\bar{\sigma}} = 2p, \qquad \avg{g\sigma} = -2q, \qquad \avg{g^2} = -2b.
+	\]
+	The denominator in \eqref{eq:mu-ratio} is
+	\[
+	D_0 := b\bar{q} - \bar{a}p = b\bar{q} + \frac{p}{2}.
+	\]
+	Thus:
+	\[
+	D_0 = \frac{1}{4}\left(\avg{g\bar{\sigma}} + \avg{g^2}\,\overline{\avg{g\sigma}}\right).
+	\]
+	Similarly, the numerator is
+	\[
+	N_0 := b\bar{p} - \bar{a}q = \frac{1}{4}\left(\avg{g\sigma} + \avg{g^2}\,\overline{\avg{g\bar{\sigma}}}\right) \cdot (-1).
+	\]
+	Yielding the following:
+	\begin{equation}\label{eq:mu-formula}
+		\mu_{e(\tilde{h})}(i) = -\frac{N}{D},\qquad
+		N:=\avg{g\sigma}+\avg{g^2}\,\overline{\avg{g\bar{\sigma}}},\qquad
+		D:=\avg{g\bar{\sigma}}+\avg{g^2}\,\overline{\avg{g\sigma}} ,
+	\end{equation}
+	so that $N=-4N_0$ and $D=4D_0$.
+	
+	
+	
+	\textbf{Step 2: Non-degeneracy of the denominator.}
+	
+	We will show that the denominator $D$ of the formula for $\mu_{e(\tilde{h})}(i)$ satisfies $|D| = 4(|a|^2 - |b|^2)|w_z|$, and that both factors are bounded below by positive constants depending only on $\rho$.
+	
+	\medskip
+	\noindent\textit{2a. The denominator in terms of $w_z$.}
+	By Step~1e, $D=4D_0=4\bigl(b\bar q-\bar ap\bigr)$.
+	From the formula for $w_z$ in Step 1c: $w_z = \frac{b\bar{q} - \bar{a}p}{|a|^2 - |b|^2}$. Hence $b\bar{q} - \bar{a}p = (|a|^2 - |b|^2)w_z$. Substituting:
+	\[
+	D = 4(|a|^2 - |b|^2)\,w_z,
+	\]
+	Thus:
+	\begin{equation}\label{eq:denom}
+		|D| = 4(|a|^2 - |b|^2)\,|w_z|.
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{2b. Lower bound for $|a|^2-|b|^2$.}
+	We have $|a|^2=1/4$ and $|b|^2=\frac14|\avg{g^2}|^2$, so
+	\[
+	|a|^2-|b|^2=\frac14\bigl(1-|\avg{g^2}|^2\bigr).
+	\]
+	We claim that $|\avg{g^2}|\le1-\delta(\rho)$ for some $\delta(\rho)>0$. By
+	Step~1b, $g=\gamma\circ\tilde h\circ\gamma^{-1}$ is $\rho'$-quasisymmetric
+	with $\rho'$ depending only on $\rho$, and $\avg{g}=0$; that is,
+	$g\in\calG_{\rho'}$ in the notation of Lemma~\ref{lem:compactness}(a). The
+	functional $g\mapsto|\avg{g^2}|$ is continuous for uniform convergence,
+	\[
+	\bigl|\avg{g^2}-\avg{f^2}\bigr|=\bigl|\avg{(g-f)(g+f)}\bigr|\le2\|g-f\|_\infty ,
+	\]
+	and $\calG_{\rho'}$ is compact, so the maximum
+	$1-\delta(\rho):=\max_{g\in\calG_{\rho'}}|\avg{g^2}|$ is attained. It is
+	strictly less than $1$: since $|g|\equiv1$, the triangle inequality gives
+	$|\avg{g^2}|\le1$, and equality forces $g^2$ to agree almost everywhere with
+	a unimodular constant $c$, hence everywhere by continuity; then $g$ takes at
+	most the two values $\pm\sqrt c$, and since $S^1$ is connected and $g$
+	continuous, $g$ would be constant, contradicting $\avg{g}=0$ with $|g|=1$.
+	Therefore $\delta(\rho)>0$ and
+	\[
+	|a|^2-|b|^2=\frac14\bigl(1-|\avg{g^2}|^2\bigr)
+	\ge\frac{\delta(2-\delta)}4\ge\frac{\delta}{4}>0 .
+	\]
+	
+	\noindent\textit{2c. Lower bound for $|w_z|$: bi-hyperbolic-Lipschitz property.}
+	The Douady--Earle extension $e(\tilde{h}): \U \to \U$ satisfies (see \cite[Prop.\ 4.1(3)]{Sh}): there exists $C = C(\rho) \geq 1$ such that for all $z \in \U$,
+	\[
+	\frac{1}{C} \leq \frac{\rho_{\U}(w)\,|dw|}{\rho_{\U}(z)\,|dz|} \leq C, \qquad w = e(\tilde{h})(z),
+	\]
+	where $\rho_{\U}(z) = 1/\mathrm{Im}(z)$ is the hyperbolic density.
+	
+	At $z = i$ and $w = e(\tilde{h})(i) = i$, we have $\mathrm{Im}(z) = \mathrm{Im}(w) = 1$, so $\rho_{\U}(z) = \rho_{\U}(w) = 1$ and:
+	\[
+	\frac{1}{C} \leq \frac{|dw|}{|dz|} \leq C.
+	\]
+	From $dw = w_z\,dz + w_{\bar{z}}\,d\bar{z}$, and for a unit vector $dz = e^{i\theta}$, we have:
+	\[
+	|dw| = |w_z e^{i\theta} + w_{\bar{z}} e^{-i\theta}|.
+	\]
+	As $\theta$ varies over $[0, 2\pi)$, the range of $|dw|$ is $[\,|w_z| - |w_{\bar{z}}|,\; |w_z| + |w_{\bar{z}}|\,]$ (since $e(\tilde{h})$ is orientation-preserving, its Jacobian $|w_z|^2 - |w_{\bar{z}}|^2 > 0$, ensuring $|w_z| > |w_{\bar{z}}|$). The bi-Lipschitz condition therefore gives:
+	\[
+	|w_z| + |w_{\bar{z}}| \leq C ,
+	\]
+	\[
+	|w_z| - |w_{\bar{z}}| \geq \frac{1}{C} .
+	\]
+	Since $|w_{\bar{z}}| \geq 0$, the second inequality immediately yields:
+	\[
+	|w_z| \geq |w_z| - |w_{\bar{z}}| \geq \frac{1}{C(\rho)}.
+	\]
+	
+	\medskip
+	\noindent\textit{2d. Conclusion.}
+	Combining \eqref{eq:denom} with the bounds from 2b and 2c:
+	\[
+	|D| = 4(|a|^2 - |b|^2)|w_z| \geq 4 \cdot \frac{\delta(\rho)}{4} \cdot \frac{1}{C(\rho)} = \frac{\delta(\rho)}{C(\rho)} =: c(\rho) > 0.
+	\]
+	Therefore $|\mu_{e(\tilde{h})}(i)| = |N|/|D| \leq |N|/c(\rho)$, where  $N$ satisfies
+	\[
+	|N| \leq |\avg{g\sigma}| + |\avg{g^2}|\,|\avg{g\bar{\sigma}}| \leq |\avg{g\sigma}| + |\avg{g\bar{\sigma}}|.
+	\]
+	Hence
+	\[
+	|\mu_{e(\tilde{h})}(i)| \leq C(\rho)\big(|\avg{g(e^{i\varphi})\sigma(e^{i\varphi})}| + |\avg{g(e^{i\varphi})\bar{\sigma}(e^{i\varphi})}|\big).
+	\]
+	
+	
+	
+	\textbf{Step 3: Comparison with an affine map.}
+	
+	Let $M(t) = \kappa t + \tau$ with $\kappa > 0$ be an arbitrary affine map, and let $L = A \circ M \circ B$ be its normalized version on the half-plane; explicitly $L(t)=\frac{M(x_0+y_0t)-u_0}{v_0}$, an affine map of slope $\kappa y_0/v_0>0$. Define the disk M\"obius conjugate
+	\[
+	m = \gamma \circ L \circ \gamma^{-1}: \Delta \to \Delta.
+	\]
+	Since $L$ is an increasing affine map, it is a M\"obius automorphism of $\U$, so $m$ is a M\"obius automorphism of $\Delta$; being holomorphic on $\Delta$ and continuous on $\overline\Delta$, it has only non-negative Fourier frequencies on the circle: $m(e^{i\varphi}) = \sum_{n \geq 0} c_n e^{in\varphi}$. (This is the only place where $\kappa>0$ is used.)
+	
+	\medskip
+	\noindent\textit{3a. Bounding $|\avg{g\sigma}|$.}
+	Since $m$ has only non-negative frequencies and $\sigma(\zeta) = \zeta = e^{i\varphi}$ has frequency $+1$:
+	\[
+	\avg{m(e^{i\varphi})\sigma(e^{i\varphi})} = \avg{m(e^{i\varphi})e^{i\varphi}} = c_{-1} = 0,
+	\]
+	because $m$ has no negative frequencies. Therefore
+	\[
+	|\avg{g(e^{i\varphi})\sigma(e^{i\varphi})}| = |\avg{(g - m)\sigma}| \leq \avg{|g(e^{i\varphi}) - m(e^{i\varphi})| \cdot |\sigma(e^{i\varphi})|} = \avg{|g - m|},
+	\]
+	since $|\sigma|=1$.
+	
+	\medskip
+	\noindent\textit{3b. Bounding $|\avg{g^2}|$.}
+	Write $g^2 = (g^2 - m^2) + m^2$, so by the triangle inequality:
+	\[
+	|\avg{g^2}| \leq |\avg{g^2 - m^2}| + |\avg{m^2}|.
+	\]
+	
+	\textit{First term.} We have $g^2 - m^2 = (g - m)(g + m)$. Since we have $|g| = |m| = 1$, so $|g + m| \leq 2$. Therefore $|g^2 - m^2| \leq 2|g - m|$, and
+	\[
+	|\avg{g^2 - m^2}| \leq \avg{|g^2 - m^2|} \leq 2\avg{|g - m|}.
+	\]
+	
+	\textit{Second term.} Since $m^2$ is holomorphic in $\Delta$. By the Cauchy mean value property:
+	\[
+	\avg{m^2} = \frac{1}{2\pi}\int_0^{2\pi} m(e^{i\varphi})^2\,d\varphi = m(0)^2,
+	\]
+	so $|\avg{m^2}| = |m(0)|^2$.
+	
+	Combining:
+	\[
+	|\avg{g^2}| \leq 2\avg{|g - m|} + |m(0)|^2.
+	\]
+	
+	\medskip
+	\noindent\textit{3c. Eliminating $|m(0)|^2$.}
+	From $\avg{g} = 0$ (Step 1b):
+	\[
+	0 = \avg{g} = \avg{m} + \avg{g - m}.
+	\]
+	Since $m$ is holomorphic and $\avg{m} = m(0)$. Therefore
+	\[
+	m(0) = -\avg{g - m}, \qquad |m(0)| \leq \avg{|g - m|}.
+	\]
+	Hence $|m(0)|^2 \leq (\avg{|g - m|})^2 \leq 2\avg{|g - m|}$ (since $|g - m| \leq |g| + |m| = 2$, we have $\avg{|g-m|} \leq 2$)
+	
+	\medskip
+	\noindent\textit{3d. Combining the bounds.}
+	From Step 2d, $|\mu| \leq C(\rho)(|\avg{g\sigma}| + |\avg{g^2}||\avg{g\bar{\sigma}}|)$. We bound each term in the numerator of $\mu$ separately.
+	
+	\textit{Bounding $|\avg{g\sigma}|$.} This is Step~3a: $|\avg{g\sigma}|\le\avg{|g-m|}$.
+	
+	\textit{Bounding $|\avg{g^2}| \cdot |\avg{g\bar{\sigma}}|$.} we use the  bound $|\avg{g\bar{\sigma}}| \leq \avg{|g|\,|\bar{\sigma}|} = 1$.
+	
+	By step 3b, $|\avg{g^2}| \leq 2\avg{|g - m|} + |m(0)|^2$. By step 3c, $|m(0)| \leq \avg{|g - m|}$, and since $|g - m| \leq 2$ (as $|g| = |m| = 1$), we have $|m(0)|^2 \leq \avg{|g-m|}^2 \leq 2\avg{|g-m|}$. Therefore
+	\[
+	|\avg{g^2}| \leq 4\avg{|g - m|}.
+	\]
+	
+	\textit{Combining.} The numerator $N$ of $\mu$ satisfies
+	\[
+	|N| \leq |\avg{g\sigma}| + |\avg{g^2}|\,|\avg{g\bar{\sigma}}|\] \[ \leq \avg{|g - m|} + 4\avg{|g - m|} \cdot 1 = 5\avg{|g - m|}.
+	\]
+	Since $|D| \geq c(\rho) > 0$ by Step 2:
+	\[
+	|\mu_{e(\tilde{h})}(i)| = \frac{|N|}{|D|} \leq \frac{5}{c(\rho)}\,\avg{|g(e^{i\varphi}) - m(e^{i\varphi})|} = C(\rho)\,\avg{|g(e^{i\varphi}) - m(e^{i\varphi})|}.
+	\]
+	
+	\medskip
+	\noindent\textit{3e. Transfer back to the half-plane.}
+	Recall $g = \gamma \circ \tilde{h} \circ \gamma^{-1}$ and $m = \gamma \circ L \circ \gamma^{-1}$, where $L = A \circ M \circ B$.
+	
+	Let $\zeta = e^{i\varphi} = \gamma(t)$. From Step 1b, $\frac{d\varphi}{2\pi} = \frac{dt}{\pi(t^2+1)}$. Therefore
+	\[
+	\avg{|g - m|} = \int_{\R} |\gamma(\tilde{h}(t)) - \gamma(L(t))| \cdot \frac{dt}{\pi(t^2+1)}.
+	\]
+	
+	For any $u, v \in \R$ and $w_0 = u_0 + iv_0 \in \U$:
+	\[
+	\left|\frac{u - w_0}{u - \bar{w}_0} - \frac{v - w_0}{v - \bar{w}_0}\right| = \frac{2v_0|u - v|}{|u - \bar{w}_0|\,|v - \bar{w}_0|}.
+	\]
+	We set $w_0 = i$ (so $v_0 = 1$, $\bar{w}_0 = -i$), and $\gamma(x) = \frac{x-i}{x+i}$. Setting $u = \tilde{h}(t)$, $v = L(t)$:
+	\[
+	|\gamma(\tilde{h}(t)) - \gamma(L(t))| = \frac{2|\tilde{h}(t) - L(t)|}{|\tilde{h}(t) + i|\,|L(t) + i|}.
+	\]
+	
+	\textit{Denormalization.} Recall $\tilde{h}(t) = \frac{h(x_0+y_0t) - u_0}{v_0}$ and $L(t) = \frac{M(x_0+y_0t) - u_0}{v_0}$.
+	
+	\textit{Numerator:}
+	\[
+	\tilde{h}(t) - L(t) = \frac{h(x_0+y_0t) - M(x_0+y_0t)}{v_0}.
+	\]
+	
+	\textit{Denominator:}
+	\[
+	\tilde{h}(t) + i = \frac{h(x_0+y_0t) - u_0}{v_0} + i = \frac{h(x_0+y_0t) - (u_0 - iv_0)}{v_0} = \frac{h(x_0+y_0t) - \bar{w}_0}{v_0}.
+	\]
+	Similarly, $L(t) + i = \frac{M(x_0+y_0t) - \bar{w}_0}{v_0}$.
+	
+	Substituting:
+	\[
+	|\gamma(\tilde{h}(t)) - \gamma(L(t))| = \frac{2v_0\,|h(s) - M(s)|}{|h(s) - \bar{w}_0|\,|M(s) - \bar{w}_0|},
+	\]
+	where $s = x_0 + y_0 t$.
+	
+	\textit{Measure conversion.} Under $s = x_0 + y_0 t$, $dt = ds/y_0$ and $t^2 + 1 = \frac{(s-x_0)^2 + y_0^2}{y_0^2}$, so
+	\[
+	\frac{dt}{\pi(t^2+1)} = \frac{ds/y_0}{\pi \cdot \frac{(s-x_0)^2 + y_0^2}{y_0^2}} = \frac{1}{\pi}\frac{y_0}{(s-x_0)^2 + y_0^2}\,ds = P_{z_0}(s)\,ds.
+	\]
+	
+	\textit{Combining:}
+	\[
+	\avg{|g - m|} = \int_{\R} \frac{2v_0\,|h(s) - M(s)|}{|h(s) - \bar{w}_0|\,|M(s) - \bar{w}_0|}\,P_{z_0}(s)\,ds.
+	\]
+	
+	Substituting:
+	\[
+	|\mu_{e(h)}(z_0)| = |\mu_{e(\tilde{h})}(i)| \leq C(\rho) \int_{\R} \frac{2v_0\,|h(s) - M(s)|}{|h(s) - \bar{w}_0|\,|M(s) - \bar{w}_0|}\,P_{z_0}(s)\,ds.
+	\]
+	This is precisely the forward inequality. 
+	
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Beta-Numbers and the Affine Deviation}\label{sec:beta-theta}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We now convert the forward inequality into the pointwise bound
+$|\mu_{e(h)}(z)|\le C(\rho)\,\Theta_h(x,y)$ announced in \S\ref{ss:outline}.
+The affine map in Theorem~\ref{thm:forward} is chosen to be the $L^2$-projection
+of $h$ onto affine functions on the interval below $z$; the localization
+estimates of \S\ref{ss:localization} then give lower bounds for the two
+denominators on each dyadic annulus, and a telescoping argument converts the
+resulting quantities into beta-numbers.
+
+\subsection{Definitions}
+
+\begin{definition}[Beta-number]\label{def:beta}
+	\lean{beta, betaPt}
+	\leanok
+	For an interval $I\subset\R$ and an increasing homeomorphism $h$, define
+	\[
+	\beta_h(I):=\inf_{A}\frac{1}{|I|\,|h(I)|}\int_I|h(t)-A(t)|\,dt,
+	\]
+	where the infimum is taken over all real affine maps $A(t)=at+b$. For $x\in\R$, $y>0$, set
+	\[
+	\beta_h(x,y):=\beta_h([x-y,x+y]).
+	\]
+\end{definition}
+
+\begin{remark}[The infimum is attained; $\beta_h$ is continuous]\label{rem:beta-attained}
+	Write an affine map on $I=I(x,y)$ as $A(t)=a(t-x)+b$. Then
+	\begin{equation}\label{eq:affine-coercive}
+		\frac1{|I|}\int_I|A|\,dt=\frac1{2y}\int_{-y}^{y}|as+b|\,ds
+		\ \ge\ \max\Bigl(|b|,\ \tfrac12|a|y\Bigr)\ \ge\ \tfrac14\bigl(|b|+|a|y\bigr) .
+	\end{equation}
+	Indeed, the bound by $|b|$ is Jensen's inequality applied to the convex
+	function $|\cdot|$, and pairing $s$ with $-s$ gives
+	$|as+b|+|{-as}+b|\ge2|a|\,|s|$, whence
+	$\frac1{2y}\int_{-y}^{y}|as+b|\,ds\ge\frac1{2y}\int_0^{y}2|a|s\,ds=\frac12|a|y$.
+	
+	Consequently the functional $A\mapsto\int_I|h-A|$ is convex, continuous and
+	coercive on the two-dimensional space of affine maps on $I$, so it attains its
+	minimum; we fix a minimizer, written $A_I^{\rm opt}$, for every bounded
+	interval $I$. (Only the identity
+	$\frac1{|I||h(I)|}\int_I|h-A_I^{\rm opt}|=\beta_h(I)$ is used below, so
+	near-minimizers would serve equally well.)
+	
+	The estimate \eqref{eq:affine-coercive} also shows that $\beta_h$ is continuous
+	on $\U$, hence Borel measurable --- a point used implicitly whenever $\beta_h$
+	is integrated against $\frac{dx\,dy}{y}$ in
+	\S\S\ref{sec:beta-carl}--\ref{sec:theta}. Indeed
+	\[
+	F(x,y,a,b):=\frac1{2y\,|h(I(x,y))|}\int_{-y}^{y}\bigl|h(x+s)-as-b\bigr|\,ds
+	\]
+	is jointly continuous on $\R\times(0,\infty)\times\R^2$ (dominated
+	convergence), and if $(x,y)$ ranges over a compact subset $Q$ of
+	$\R\times(0,\infty)$ then, by \eqref{eq:affine-coercive} and the boundedness of
+	$h$ on the corresponding compact set of $t$'s, $F(x,y,a,b)\to\infty$ uniformly
+	for $(x,y)\in Q$ as $|a|+|b|\to\infty$. Hence on $Q$ the infimum
+	$\beta_h(x,y)=\inf_{a,b}F(x,y,a,b)$ may be taken over one fixed compact set of
+	parameters, and is therefore continuous there. The quantity $\eps_h$ of
+	Definition~\ref{def:eps} is continuous on $\U$ for the same reason, its
+	denominator being continuous and non-vanishing.
+\end{remark}
+
+\begin{definition}[Affine Deviation]\label{def:theta}
+	\lean{Theta}
+	\leanok
+	For $z=x+iy\in\U$, define
+	\[
+	\Theta_h(x,y):=\sum_{k=0}^{\infty}4^{-k}\,\beta_h(x,2^k y).
+	\]
+\end{definition}
+
+\begin{definition}[$L^2$ Orthogonal Projection]\label{def:L2-proj}
+	\lean{l2Proj}
+	\leanok
+	For $I_0=[x-y,x+y]$, let $L_{I_0}$ be the $L^2(I_0)$-orthogonal projection of $h$ onto affine functions:
+	\[
+	L_{I_0}(t)=m_0(t-x)+c_0,
+	\]
+	where $c_0=\frac1{2y}\int_{x-y}^{x+y}h(s)\,ds$ and $m_0=\frac{3}{2y^3}\int_{x-y}^{x+y}h(s)(s-x)\,ds$.
+\end{definition}
+
+\subsection{Lower bounds for the two denominators}
+
+\begin{lemma}[The key distance bound (1)]\label{lem:dist_conj_lower_bound}
+	\uses{lem:de-loc, cor:real-loc}
+	\lean{dist_conj_lower_bound}
+	\leanok
+	For every real $q$, $|q-\bar w|\ge c_\rho\bigl(L+\operatorname{dist}(q,h(I_0))\bigr)$.
+\end{lemma}
+\begin{proof}
+	This is estimate (1) in the proof of Lemma~\ref{lem:denom} below.
+\end{proof}
+
+\begin{definition}[Slope of the $L^2$ projection]\label{def:l2ProjSlope}
+	\lean{l2ProjSlope, l2Proj_eq_slope}
+	$m_0:=\tfrac3{2y^3}\int_{I_0}h(s)(s-x)\,ds$, so that $L_{I_0}(t)=m_0(t-x)+c_0$.
+\end{definition}
+
+\begin{lemma}[Slope of $L_{I_0}$]\label{lem:l2ProjSlope_comparable}
+	\uses{def:l2ProjSlope}
+	\lean{l2ProjSlope_symmetrised, l2ProjSlope_comparable}
+	\leanok
+	$m_0=\tfrac3{2y^3}\int_0^y(h(x+\tau)-h(x-\tau))\tau\,d\tau\asymp_\rho L/(2y)$; in particular $m_0>0$.
+\end{lemma}
+\begin{proof}
+	This is the computation of the slope of $L_{I_0}$ in the proof of Lemma~\ref{lem:denom} below.
+\end{proof}
+
+\begin{lemma}[Position of $c_0$]\label{lem:intervalAvg_mem_image}
+	\lean{intervalAvg_mem_image}
+	\leanok
+	$c_0\in h(I_0)$.
+\end{lemma}
+\begin{proof}
+	$c_0$ is the average of $h$ over $I_0$, so this is immediate since $h$ is increasing.
+\end{proof}
+
+\begin{lemma}[Quasisymmetry across dyadic blocks]\label{lem:qs_dyadic_growth}
+	\lean{qs_dyadic_growth}
+	\leanok
+	With $R_m=h(x+2^my)-h(x)$, $S_m=h(x)-h(x-2^my)$: $\rho^{-1}\le R_m/S_m\le\rho$, $R_{m+1}\le(1+\rho)R_m$, $S_{m+1}\le(1+\rho)S_m$.
+\end{lemma}
+\begin{proof}
+	This is the estimate for the second denominator in the proof of Lemma~\ref{lem:denom} below, applied to adjacent equal-length intervals.
+\end{proof}
+
+\begin{lemma}[Denominator Lower Bounds for $L^2$ Projection]\label{lem:denom}
+	\uses{cor:real-loc, lem:de-loc, lem:dist_conj_lower_bound, lem:l2ProjSlope_comparable, lem:intervalAvg_mem_image, lem:qs_dyadic_growth}
+	\lean{denominator_lower_bounds}
+	\leanok
+	Let $h$ be a $\rho$-quasisymmetric increasing homeomorphism of $\R$, $z=x+iy\in\U$, $w=e(h)(z)=u+iv$. Put $I_0=[x-y,x+y]$, $L:=|h(I_0)|$. For $k\ge1$, let $I_k=[x-2^ky,x+2^ky]$ and $T_k=I_k\setminus I_{k-1}$. Then for every $t\in T_k$,
+	\[
+	|L_{I_0}(t)-\bar w|\ge c_\rho\,2^k L,\qquad
+	|h(t)-\bar w|\ge c_\rho\,|h(I_k)|.
+	\]
+\end{lemma}
+
+\begin{proof}
+	From Lemma~\ref{lem:de-loc} and Corollary~\ref{cor:real-loc} we have
+	$v\ge c_{\rm DE}(\rho)L$ and $\operatorname{dist}(u,h(I_0))\le C_0(\rho)L$. We
+	first
+	record that for any $q\in\R$,
+	\[
+	|q-\bar w|\ge c_\rho\bigl(L+\operatorname{dist}(q,h(I_0))\bigr).
+	\tag{1}
+	\]
+	Indeed, $\bar w=u-iv$ and $q$ is real, so
+	$|q-\bar w|=\bigl((q-u)^2+v^2\bigr)^{1/2}\ge\max(|q-u|,v)\ge\frac12(|q-u|+v)$.
+	Write $d:=\operatorname{dist}(q,h(I_0))$. If $d\le2C_0(\rho)L$ then
+	$L+d\le(1+2C_0)L$ and
+	$|q-\bar w|\ge v\ge c_{\rm DE}L\ge\frac{c_{\rm DE}}{1+2C_0}(L+d)$. If
+	instead $d>2C_0(\rho)L$, then, since
+	$d\le|q-u|+\operatorname{dist}(u,h(I_0))\le|q-u|+C_0L$, we get
+	$|q-u|\ge d-C_0L\ge\frac d2$, while $L<\frac{d}{2C_0}$ gives
+	$L+d\le(1+\frac1{2C_0})d$; hence
+	$|q-\bar w|\ge\frac12|q-u|\ge\frac d4\ge\frac{1}{4}(1+\frac1{2C_0})^{-1}(L+d)$.
+	Taking $c_\rho$ to be the smaller of the two constants proves (1).
+	
+	\medskip\noindent\textit{Slope of $L_{I_0}$.}
+	Changing variables $\tau=s-x$,
+	$m_0=\frac{3}{2y^3}\int_{-y}^{y}h(x+\tau)\,\tau\,d\tau
+	=\frac{3}{2y^3}\int_0^{y}\bigl(h(x+\tau)-h(x-\tau)\bigr)\,\tau\,d\tau$.
+	By $\rho$-quasisymmetry, $h(x+\tau)-h(x-\tau)\asymp_\rho L$ for $\tau\in[y/2,y]$, hence $m_0\asymp_\rho L/(2y)=a_{I_0}$; in particular $m_0\ge b_\rho\,L/(2y)$ for some $b_\rho>0$ depending only on $\rho$. Note $m_0>0$, since $h$ is increasing.
+	
+	\medskip\noindent\textit{Position of $c_0$.}
+	$c_0$ is the average of $h$ over $I_0$, so $c_0\in h(I_0)$.
+	
+	\medskip\noindent\textit{First denominator.}
+	For $t\in T_k$ we have $|t-x|\ge2^{k-1}y$, so
+	$|L_{I_0}(t)-c_0|=m_0|t-x|\ge b_\rho2^{k-2}L$ with $b_\rho>0$ depending only on
+	$\rho$, by the estimate $m_0\ge b_\rho L/(2y)$ just proved. Since $c_0\in h(I_0)$
+	and $h(I_0)$ is an interval of length $L$,
+	\[
+	\operatorname{dist}\bigl(L_{I_0}(t),h(I_0)\bigr)\ \ge\ |L_{I_0}(t)-c_0|-L
+	\ \ge\ b_\rho2^{k-2}L-L .
+	\]
+	Two cases. If $b_\rho2^{k-2}\ge2$, this gives
+	$\operatorname{dist}(L_{I_0}(t),h(I_0))\ge\frac12b_\rho2^{k-2}L$, and (1) yields
+	$|L_{I_0}(t)-\bar w|\ge c_\rho\frac{b_\rho}{8}2^{k}L$. If instead
+	$b_\rho2^{k-2}<2$, i.e.\ $2^k<8/b_\rho$, then (1) alone gives
+	$|L_{I_0}(t)-\bar w|\ge c_\rho L\ge c_\rho\frac{b_\rho}{8}2^kL$. In both cases
+	$|L_{I_0}(t)-\bar w|\ge c_\rho' 2^kL$ with $c_\rho'>0$ depending only on $\rho$.
+	
+	\medskip\noindent\textit{Second denominator.}
+	Let $R_m:=h(x+2^my)-h(x)$, $S_m:=h(x)-h(x-2^my)$. By $\rho$-quasisymmetry applied to adjacent equal-length intervals,
+	\[
+	\frac1\rho\le\frac{R_m}{S_m}\le\rho,\qquad
+	R_m\le(1+\rho)R_{m-1},\qquad
+	S_m\le(1+\rho)S_{m-1}.
+	\]
+	For $t\ge x+2^{k-1}y$, $\operatorname{dist}(h(t),h(I_0))=h(t)-h(x+y)$, so
+	\[
+	L+\operatorname{dist}(h(t),h(I_0))\ge h(x+2^{k-1}y)-h(x)=R_{k-1}\ge (1+\rho)^{-2}|h(I_k)|.
+	\]
+	The case $t\le x-2^{k-1}y$ is symmetric. Applying (1) with $q=h(t)$ yields $|h(t)-\bar w|\ge c_\rho|h(I_k)|$.
+\end{proof}
+
+\subsection{Auxiliary lemmas}
+
+\begin{lemma}[Affine Growth on Concentric Intervals]\label{lem:affine-growth}
+	\lean{affine_growth}
+	\leanok
+	Let $P(t)=at+b$ be affine. If $I\subset I'$ are concentric intervals and $|I'|/|I|=R\ge1$, then
+	\[
+	\frac1{|I'|}\int_{I'}|P(t)|\,dt\le C R\,\frac1{|I|}\int_I|P(t)|\,dt,
+	\]
+	where $C$ is an absolute constant.
+\end{lemma}
+
+\begin{proof}
+	By translation and scaling, take $I=[-1,1]$, $I'=[-R,R]$. For $P(t)=at+b$,
+	\[
+	\frac1{2R}\int_{-R}^{R}|P(t)|dt\le|b|+\frac{|a|R}{2}\le C R(|a|+|b|).
+	\]
+	On the other hand, $\frac12\int_{-1}^{1}|at+b|dt\ge c(|a|+|b|)$ for some absolute $c>0$. The claim follows.
+\end{proof}
+
+\begin{lemma}[Crude Beta Bound]\label{lem:crude-beta}
+	\lean{crude_beta_bound}
+	\leanok
+	Let $h$ be increasing. For every interval $I=[a,b]$,
+	\[
+	\beta_h(I)\le 1.
+	\]
+\end{lemma}
+
+\begin{proof}
+	Let $A(t)=h(a)+\frac{h(b)-h(a)}{b-a}(t-a)$ be the endpoint affine map.
+	For any $t\in[a,b]$, write $t=a+\lambda(b-a)$ with $\lambda\in[0,1]$. Then
+	\[
+	A(t)=(1-\lambda)h(a)+\lambda h(b).
+	\]
+	Since $h$ is increasing, $h(a)\le h(t)\le h(b)$. Both $h(t)$ and $A(t)$ lie
+	in the interval $[h(a),h(b)]$, hence
+	\[
+	|h(t)-A(t)|\le|h(b)-h(a)|=|h(I)|.
+	\]
+	Integrating over $I$,
+	\[
+	\int_I|h(t)-A(t)|\,dt\le|h(I)|\,|I|.
+	\]
+	Dividing by $|I|\,|h(I)|$ gives $\frac{1}{|I|\,|h(I)|}\int_I|h-A|\le 1$.
+	Since $\beta_h(I)$ is the infimum over all affine maps, $\beta_h(I)\le 1$.
+\end{proof}
+
+\begin{lemma}[$L^2$--$L^1$ Comparison]\label{lem:L2-L1-comparison}
+	\lean{l2_l1_comparison}
+	\leanok
+	Let $h$ be an increasing homeomorphism.
+	For every interval $I=[a,b]$ with centre $x$ and half-length $y$, let
+	$A_I^{\rm opt}$ be an affine map attaining the infimum in $\beta_h(I)$, and
+	let $L_I$ be the $L^2(I)$-orthogonal projection of $h$ onto affine functions:
+	\[
+	L_I(t)=\frac1{|I|}\int_I h(s)\,ds+\frac{3}{2y^3}\int_I h(s)(s-x)\,ds\cdot(t-x).
+	\]
+	Then
+	\[
+	\frac1{|I|}\int_I|L_I-A_I^{\rm opt}|\le 4\,|h(I)|\,\beta_h(I).
+	\]
+\end{lemma}
+
+\begin{proof}
+	Write $P_I$ for the $L^2(I)$-orthogonal projection onto the two-dimensional
+	space of affine functions on $I$.  For $t\in I$, $L_I(t)=P_I h(t)$.
+	Since $A_I^{\rm opt}$ is affine, $P_I(A_I^{\rm opt})=A_I^{\rm opt}$.  Hence
+	\[
+	L_I-A_I^{\rm opt}=P_I(h-A_I^{\rm opt}).
+	\]
+	
+	It suffices to prove that $P_I$ is bounded on $L^1(I)$ with an
+	absolute constant independent of $I$.  By translation we may assume
+	$x=0$, so $I=[-y,y]$ and $|I|=2y$.
+	For $f\in L^1(I)$,
+	\[
+	P_I f(t)=\frac1{2y}\int_{-y}^{y}f(s)\,ds
+	+\frac{3}{2y^3}\int_{-y}^{y}f(s)s\,ds\cdot t .
+	\]
+	
+	The first term is the average of $f$; its $L^1(I)$ norm is bounded by
+	$\|f\|_{L^1(I)}$, since
+	\[
+	\int_{-y}^{y}\Bigl|\frac1{2y}\int_{-y}^{y}f(s)\,ds\Bigr|\,dt
+	=2y\cdot\frac1{2y}\Bigl|\int_{-y}^{y}f\Bigr|
+	\le\|f\|_{L^1(I)} .
+	\]
+	
+	For the second term, set $A=\frac{3}{2y^3}\int_{-y}^{y}f(s)s\,ds$.
+	Then $|A|\le\frac{3}{2y^3}\cdot y\cdot\|f\|_{L^1(I)}
+	=\frac{3}{2y^2}\|f\|_{L^1(I)}$,
+	and
+	\[
+	\int_{-y}^{y}|A\,t|\,dt
+	=|A|\int_{-y}^{y}|t|\,dt
+	=|A|\,y^2
+	\le\frac{3}{2}\|f\|_{L^1(I)} .
+	\]
+	
+	Adding the two contributions,
+	\[
+	\|P_I f\|_{L^1(I)}\le\Bigl(1+\frac{3}{2}\Bigr)\|f\|_{L^1(I)}
+	=\frac{5}{2}\|f\|_{L^1(I)} .
+	\]
+	
+	Applying this with $f=h-A_I^{\rm opt}$,
+	\[
+	\frac1{|I|}\int_I|L_I-A_I^{\rm opt}|
+	\le\frac{5}{2}\cdot\frac1{|I|}\int_I|h-A_I^{\rm opt}|
+	=\frac{5}{2}\,|h(I)|\,\beta_h(I)
+	\le 4\,|h(I)|\,\beta_h(I),
+	\]
+	which completes the proof.
+\end{proof}
+
+\begin{lemma}[Telescoping Decomposition]\label{lem:delta-beta-new}
+	\uses{lem:L2-L1-comparison, lem:affine-growth}
+	\lean{telescoping_decomposition}
+	\leanok
+	Let $I_j=I_j(x,y):=[x-2^jy,x+2^jy]$, $j\ge0$, and let $L_{I_0}$ be the $L^2$ projection of $h$ onto affine functions on $I_0$. Define
+	\[
+	\widetilde\Delta_h(x,y,k):=\frac{1}{|I_k|\,|h(I_k)|}\int_{I_k}|h(t)-L_{I_0}(t)|\,dt.
+	\]
+	Then
+	\[
+	\widetilde\Delta_h(x,y,k)\le C\sum_{j=0}^k 2^{k-j}\,\beta_h(I_j),
+	\]
+	where $C$ is an absolute constant. (Only the monotonicity of $h$ is used; no
+	quasisymmetry or regularity is needed here.)
+\end{lemma}
+
+\begin{proof}
+	Let $A_j:=A_{I_j}^{\rm opt}$ be an optimal affine map for $\beta_h(I_j)$. Decompose
+	\[
+	h-L_{I_0}=(h-A_k)+\sum_{j=0}^{k-1}(A_{j+1}-A_j)+(A_0-L_{I_0}).
+	\]
+	Hence
+	\[
+	\widetilde\Delta_h(x,y,k)\le\beta_h(I_k)
+	+\sum_{j=0}^{k-1}\frac{1}{|I_k|\,|h(I_k)|}\int_{I_k}|A_{j+1}-A_j|
+	+\frac{1}{|I_k|\,|h(I_k)|}\int_{I_k}|A_0-L_{I_0}|.
+	\]
+	
+	For the telescoping terms: each difference $A_{j+1}-A_j$ is affine. On $I_j$,
+	\[
+	\frac1{|I_j|}\int_{I_j}|A_{j+1}-A_j|
+	\le\frac1{|I_j|}\int_{I_j}|A_{j+1}-h|+\frac1{|I_j|}\int_{I_j}|h-A_j|
+	\le 2|h(I_{j+1})|\beta_h(I_{j+1})+|h(I_j)|\beta_h(I_j),
+	\]
+	where the first summand was estimated by enlarging the domain of integration,
+	$\frac1{|I_j|}\int_{I_j}|h-A_{j+1}|
+	\le\frac{|I_{j+1}|}{|I_j|}\cdot\frac1{|I_{j+1}|}\int_{I_{j+1}}|h-A_{j+1}|
+	=2|h(I_{j+1})|\beta_h(I_{j+1})$. Since $I_j$ and $I_k$ are concentric with
+	$|I_k|/|I_j|=2^{k-j}$, Lemma~\ref{lem:affine-growth} transfers this to $I_k$:
+	\[
+	\frac1{|I_k|}\int_{I_k}|A_{j+1}-A_j|
+	\le C\,2^{k-j}\Bigl(2|h(I_{j+1})|\beta_h(I_{j+1})+|h(I_j)|\beta_h(I_j)\Bigr).
+	\]
+	Dividing by $|h(I_k)|$ and using $|h(I_j)|\le|h(I_{j+1})|\le|h(I_k)|$ (valid
+	since $j+1\le k$), each such term is $\le C2^{k-j}\bigl(\beta_h(I_j)+2\beta_h(I_{j+1})\bigr)$.
+	
+	For the last term, Lemma~\ref{lem:L2-L1-comparison} gives
+	$\frac1{|I_0|}\int_{I_0}|A_0-L_{I_0}|\le4|h(I_0)|\beta_h(I_0)$. Extending to $I_k$ via Lemma~\ref{lem:affine-growth} and dividing by $|h(I_k)|\ge|h(I_0)|$ gives $C 2^k\beta_h(I_0)$.
+	
+	Summing over $j$, and reindexing the terms carrying $\beta_h(I_{j+1})$ (for which
+	$2^{k-j}=2\cdot2^{k-(j+1)}$), yields the claim.
+\end{proof}
+
+\subsection{\texorpdfstring{The pointwise bound by $\Theta_h$}{The pointwise bound by Theta_h}}
+
+\begin{lemma}[Poisson decay on dyadic annuli]\label{lem:poisson_annulus_bound}
+	\lean{poisson_annulus_bound}
+	\leanok
+	For $t\in T_k$ ($k\ge1$), $P_z(t)\le C4^{-k}/y$.
+\end{lemma}
+\begin{proof}
+	This is the estimate $P_z(t)\le C/(2^{2k}y)$ used in the proof of Proposition~\ref{prop:forward-to-theta} below.
+\end{proof}
+
+\begin{lemma}[Summation over dyadic annuli]\label{lem:dilatation_le_sum_deltaTilde}
+	\uses{lem:poisson_annulus_bound, lem:denom}
+	\lean{dilatation_le_sum_deltaTilde}
+	$|\mu_{e(h)}(z)|\le C(\rho)\sum_{k\ge0}4^{-k}\widetilde\Delta_h(x,y,k)$.
+\end{lemma}
+\begin{proof}
+	This is the body of the proof of Proposition~\ref{prop:forward-to-theta} below, summing the bound of Theorem~\ref{thm:forward} over the dyadic annuli $T_k$.
+\end{proof}
+
+\begin{lemma}[Exchange of summation order]\label{lem:sum_exchange_geometric}
+	\lean{sum_exchange_geometric}
+	\leanok
+	$\sum_{k\ge0}4^{-k}\sum_{j=0}^k2^{k-j}a_j=2\sum_{j\ge0}4^{-j}a_j$.
+\end{lemma}
+\begin{proof}
+	This is the elementary exchange of the order of summation used at the end of the proof of Proposition~\ref{prop:forward-to-theta} below.
+\end{proof}
+
+\begin{proposition}[Forward Inequality to Beta Deviation]\label{prop:forward-to-theta}
+	\uses{lem:de-loc, lem:delta-beta-new, lem:denom, thm:forward, lem:dilatation_le_sum_deltaTilde, lem:sum_exchange_geometric}
+	\lean{forward_to_theta}
+	\leanok
+	Let $h$ be a $\rho$-quasisymmetric increasing homeomorphism and $z=x+iy\in\U$. Then
+	\[
+	|\mu_{e(h)}(z)|\le C(\rho)\,\Theta_h(x,y).
+	\]
+\end{proposition}
+
+\begin{proof}
+	By the forward inequality (Theorem~\ref{thm:forward}), for \emph{any} affine map $M$ with positive slope,
+	\[
+	|\mu_{e(h)}(z)|
+	\le C(\rho)\int_{\R}\frac{2v\,|h(t)-M(t)|}{|h(t)-\bar w|\,|M(t)-\bar w|}\,P_z(t)\,dt.
+	\]
+	Choose $M=L_{I_0}$, the $L^2$ projection onto affine functions on $I_0=[x-y,x+y]$; its slope is
+	\[
+	m_0=\frac{3}{2y^3}\int_0^{y}\bigl(h(x+\tau)-h(x-\tau)\bigr)\tau\,d\tau>0
+	\]
+	because $h$ is increasing, so $L_{I_0}$ is admissible in Theorem~\ref{thm:forward}. Decompose $\R$ into dyadic annuli $T_0=I_0$ and $T_k=I_k\setminus I_{k-1}$ ($k\ge1$).
+	
+	
+	
+	
+	
+	
+	For $t\in T_k$ ($k\ge1$), $|t-x|\ge 2^{k-1}y$, so $P_z(t)\le\frac{C}{2^{2k}y}$.
+	Hence
+	\[
+	\int_{T_k}|h-L_{I_0}|P_z\,dt
+	\le\frac{C}{2^{2k}y}\int_{T_k}|h-L_{I_0}|\,dt
+	\le\frac{C}{2^{2k}y}\int_{I_k}|h-L_{I_0}|\,dt .
+	\]
+	Since $|I_k|=2^{k+1}y$,
+	\[
+	\frac{C}{2^{2k}y}\int_{I_k}|h-L_{I_0}|\,dt
+	=C\cdot 2^{-k+1}\cdot\frac{1}{|I_k|}\int_{I_k}|h-L_{I_0}|\,dt .
+	\]
+	
+	Combining with Lemma~\ref{lem:denom}:
+	\[
+	\int_{T_k}\frac{2v\,|h-L_{I_0}|}{|h-\bar w|\,|L_{I_0}-\bar w|}\,P_z\,dt
+	\le\frac{C(\rho)}{2^k|h(I_k)|}\cdot C 2^{-k}\cdot
+	\frac{1}{|I_k|}\int_{I_k}|h-L_{I_0}|\,dt
+	=C(\rho)\,4^{-k}\,\widetilde\Delta_h(x,y,k) .
+	\]
+	
+	For $k=0$, $|L_{I_0}(t)-\bar w|\ge v\ge c_{\rm DE}(\rho)L$ by
+	Lemma~\ref{lem:de-loc}, $|h(t)-\bar w|\ge v$, and
+	$P_z(t)\le C/y$ on $I_0$, giving
+	\[
+	\int_{I_0}\frac{2v\,|h-L_{I_0}|}{|h-\bar w|\,|L_{I_0}-\bar w|}\,P_z\,dt
+	\le\frac{C(\rho)}{L}\cdot\frac{C}{y}\int_{I_0}|h-L_{I_0}|\,dt
+	=C(\rho)\,\widetilde\Delta_h(x,y,0) .
+	\]
+	
+	
+	
+	Summing over $k\ge0$: $|\mu_{e(h)}(z)|\le C(\rho)\sum_{k=0}^{\infty}4^{-k}\,\widetilde\Delta_h(x,y,k)$.
+	
+	Apply Lemma~\ref{lem:delta-beta-new}:
+	\[
+	\sum_{k=0}^{\infty}4^{-k}\,\widetilde\Delta_h(x,y,k)
+	\le C\sum_{k=0}^{\infty}4^{-k}\sum_{j=0}^k 2^{k-j}\,\beta_h(x,2^j y).
+	\]
+	Exchange summation order:
+	\[
+	\sum_{k=0}^{\infty}4^{-k}\sum_{j=0}^k 2^{k-j}a_j
+	=\sum_{j=0}^{\infty}a_j\sum_{k=j}^{\infty}2^{-k-j}
+	=2\sum_{j=0}^{\infty}4^{-j}a_j,
+	\]
+	where $a_j=\beta_h(x,2^j y)$. Therefore
+	\[
+	|\mu_{e(h)}(z)|\le C(\rho)\sum_{k=0}^{\infty}4^{-k}\beta_h(x,2^k y)=C(\rho)\,\Theta_h(x,y).
+	\]
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Tent Expansion}\label{sec:tent}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+By Proposition~\ref{prop:forward-to-theta}, the proof of
+Theorem~\ref{thm:main} is reduced to the two statements (V) and (C) of
+\eqref{eq:two-inputs}. The next three sections prove both, for every increasing,
+locally absolutely continuous $h$ with $h'\in A_\infty(\R)$ and
+$\log h'\in\vmo(\R)$; the notation is that of \S\ref{ss:weights}. The argument
+is elementary and self-contained: it uses no reverse H\"older inequality with
+exponent $2$, no square-function estimate of Dorronsoro type, no stopping-time
+decomposition and no chord-arc theory.
+
+The present section is the first of the three steps. It expresses $\beta_h$ as
+a superposition over scales of a single one-scale quantity, the normalised
+second difference.
+
+
+The whole argument is organised around one scalar quantity, which measures at a
+\emph{single} scale how far $h$ is from being affine.
+
+\begin{definition}[Normalised second difference]\label{def:eps}
+	\lean{eps}
+	\leanok
+	For $x\in\R$ and $y>0$ set
+	\[
+	\eps_h(x,y):=\frac{h(x+y)+h(x-y)-2h(x)}{h(x+y)-h(x-y)} .
+	\]
+	For a bounded interval $L$ we write $\eps_h(L):=\eps_h(c_L,r_L)$.
+\end{definition}
+
+Since $h$ is increasing, $|\eps_h|<1$ everywhere. Two elementary
+reformulations will be used constantly: with $I=I(x,y)$,
+\begin{equation}\label{eq:eps-forms}
+	\eps_h(x,y)=\frac{|h(I^+)|-|h(I^-)|}{|h(I)|}
+	=\frac{(w)_{I^+}-(w)_{I^-}}{2\,(w)_{I}},
+\end{equation}
+the second equality because $|h(I^{\pm})|=\tfrac{|I|}2(w)_{I^{\pm}}$ and
+$|h(I)|=|I|(w)_I$. Equivalently,
+\begin{equation}\label{eq:eps-split}
+	(w)_{I^{\pm}}=(w)_I\bigl(1\pm\eps_h(x,y)\bigr),
+\end{equation}
+which is consistent with $(w)_I=\tfrac12\bigl((w)_{I^-}+(w)_{I^+}\bigr)$.
+
+\begin{lemma}[Tent expansion]\label{lem:tent}
+	\uses{def:eps}
+	\lean{tent_expansion}
+	\leanok
+	Let $h$ be an increasing continuous function and $I$ a bounded interval. Then
+	\[
+	\beta_h(I)\ \le\ \frac14\sum_{n\ge0}2^{-n}
+	\sum_{L\in\calT_n(I)}\frac{|h(L)|}{|h(I)|}\,\bigl|\eps_h(L)\bigr| .
+	\]
+	In particular $\beta_h(I)\le\frac12$.
+\end{lemma}
+
+\begin{proof}
+	Let $P_n$ be the piecewise linear interpolation of $h$ at the $2^n+1$ endpoints
+	of the intervals of $\calT_n(I)$. Then $P_0=A$ is the affine map agreeing with
+	$h$ at the two endpoints of $I$, and $P_n\to h$ uniformly on $I$ because $h$ is
+	uniformly continuous on the compact interval $I$. Hence
+	\[
+	h-A=\sum_{n\ge0}(P_{n+1}-P_n)\qquad\text{uniformly on }I .
+	\]
+	Fix $n$ and $L=[l,r]\in\calT_n(I)$ with midpoint $c_L$. On $L$ the function
+	$P_{n+1}-P_n$ equals the tent function $\Lambda_L$ (equal to $1$ at $c_L$, to
+	$0$ at $l$ and $r$, affine on each half of $L$) multiplied by
+	\[
+	\kappa_L:=h(c_L)-\frac{h(l)+h(r)}2=-\frac{h(r)+h(l)-2h(c_L)}2
+	=-\frac{|h(L)|}{2}\,\eps_h(L)
+	\]
+	by Definition~\ref{def:eps}; outside $L$ it vanishes. The tents attached to
+	distinct $L\in\calT_n(I)$ have disjoint interiors, and
+	$\int_L\Lambda_L\,dt=\tfrac{|L|}2$. Therefore
+	\[
+	\int_I|h-A|\,dt\le\sum_{n\ge0}\sum_{L\in\calT_n(I)}|\kappa_L|\,\frac{|L|}2
+	=\frac14\sum_{n\ge0}\sum_{L\in\calT_n(I)}|L|\,|h(L)|\,|\eps_h(L)| .
+	\]
+	Since $\beta_h(I)\le\frac1{|I|\,|h(I)|}\int_I|h-A|$ and $|L|=2^{-n}|I|$ for
+	$L\in\calT_n(I)$, the stated bound follows. The last assertion follows from
+	$|\eps_h|\le1$ and $\sum_{L\in\calT_n(I)}|h(L)|=|h(I)|$.
+\end{proof}
+
+\begin{lemma}[Squared form]\label{lem:tent2}
+	\uses{lem:tent}
+	\lean{tent_squared}
+	\leanok
+	For every bounded interval $I$ and every $\theta\in(0,1)$,
+	\[
+	\beta_h(I)^2\ \le\ \frac18\sum_{n\ge0}2^{-n(1-\theta)}
+	\sum_{L\in\calT_n(I)}\frac{|h(L)|}{|h(I)|}\,\eps_h(L)^2 .
+	\]
+\end{lemma}
+
+\begin{proof}
+	Put $p_L:=|h(L)|/|h(I)|$, so $p_L\ge0$ and $\sum_{L\in\calT_n(I)}p_L=1$ for
+	every $n$, and set $a_n:=\sum_{L\in\calT_n(I)}p_L|\eps_h(L)|$. By
+	Lemma~\ref{lem:tent} and Cauchy--Schwarz,
+	\[
+	\beta_h(I)^2\le\frac1{16}\Bigl(\sum_{n\ge0}2^{-n}a_n\Bigr)^{2}
+	\le\frac1{16}\Bigl(\sum_{n\ge0}2^{-n(1+\theta)}\Bigr)
+	\Bigl(\sum_{n\ge0}2^{-n(1-\theta)}a_n^2\Bigr).
+	\]
+	The first factor equals $\bigl(1-2^{-(1+\theta)}\bigr)^{-1}\le2$, and
+	$a_n^2\le\sum_{L\in\calT_n(I)}p_L\,\eps_h(L)^2$ by Jensen's inequality for the
+	probability weights $(p_L)$.
+\end{proof}
+
+\begin{remark}
+	Lemma~\ref{lem:tent} already sharpens Lemma~\ref{lem:crude-beta} from
+	$\beta_h\le1$ to $\beta_h\le\frac12$. More importantly it exhibits $\beta_h(I)$
+	as a superposition over scales, with geometric weights, of the one-scale
+	quantities $\eps_h$. Only monotonicity and continuity of $h$ were used; neither
+	absolute continuity nor any weight condition enters.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Entropy Inequality}\label{sec:entropy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section contains the new analytic ingredient. It states that the square
+function of $\eps_h$ over a Carleson box is dominated by the
+arithmetic--geometric mean defect of the weight at the \emph{top} scale of the
+box. The proof is a telescoping identity: at each bisection, the logarithm of
+the arithmetic mean exceeds the average of the logarithms of the two halves by
+exactly $-\tfrac12\log(1-\eps_h^2)\ge\tfrac12\eps_h^2$.
+
+\begin{definition}[Entropy defect]\label{def:D}
+	\lean{entropyDefect, entropyBound}
+	\leanok
+	For a bounded interval $K$ put
+	\[
+	D_w(K):=\log\frac{(w)_K}{m_K}
+	=\log\Bigl(\frac1{|K|}\int_Kw\Bigr)-\frac1{|K|}\int_K\log w\ \ \ge\ 0 ,
+	\]
+	and for a bounded interval $J$,
+	\[
+	E_h(J):=\sup_{|J|/2<y_0\le|J|}\ \frac1{|3J|}\int_{3J}D_w\bigl(I(x,y_0)\bigr)\,dx .
+	\]
+	Only the top dyadic band of scales enters here; this is what makes
+	Corollary~\ref{cor:eps-carleson} below a bound on a whole Carleson box by the
+	mean oscillation of $w$ at the top scale of that box alone.
+\end{definition}
+
+\begin{lemma}[Entropy inequality]\label{lem:entropy}
+	\lean{entropy_inequality}
+	\leanok
+	Let $J$ be a bounded interval, let $0<y_0\le|J|$, and put $y_n:=2^{-n}y_0$.
+	Then
+	\[
+	\frac12\sum_{n\ge0}\int_J\eps_h(x,y_n)^2\,dx
+	\ \le\ \int_{3J}D_w\bigl(I(x,y_0)\bigr)\,dx .
+	\]
+\end{lemma}
+
+\begin{proof}
+	Write $U_n(x):=\log(w)_{I(x,y_n)}$ and $V_n(x):=\alpha_{I(x,y_n)}$, so that
+	$U_n-V_n=D_w(I(\cdot,y_n))\ge0$ by Jensen's inequality. Both $U_n$ and $V_n$
+	are continuous in $x$, since $w,\alpha\in L^1_{\mathrm{loc}}$ and
+	$(w)_{I(x,y)}>0$.
+	
+	\medskip
+	\noindent\textit{Step 1: a pointwise inequality.}
+	Since $I^{\pm}(x,y_n)=I\bigl(x\pm\tfrac{y_n}2,\,y_{n+1}\bigr)$, relation
+	\eqref{eq:eps-split} gives
+	\[
+	\tfrac12\Bigl[U_{n+1}\bigl(x-\tfrac{y_n}2\bigr)+U_{n+1}\bigl(x+\tfrac{y_n}2\bigr)\Bigr]
+	=\tfrac12\log\Bigl[(w)_{I(x,y_n)}^2\bigl(1-\eps_h(x,y_n)^2\bigr)\Bigr]
+	=U_n(x)+\tfrac12\log\bigl(1-\eps_h(x,y_n)^2\bigr),
+	\]
+	whence, using $-\log(1-u)\ge u$ for $u\in[0,1)$,
+	\begin{equation}\label{eq:pointwise}
+		U_n(x)-\tfrac12\Bigl[U_{n+1}\bigl(x-\tfrac{y_n}2\bigr)
+		+U_{n+1}\bigl(x+\tfrac{y_n}2\bigr)\Bigr]\ \ge\ \tfrac12\,\eps_h(x,y_n)^2 .
+	\end{equation}
+	The same computation for $V$ gives an \emph{identity}, because
+	$\alpha_{I}=\tfrac12(\alpha_{I^-}+\alpha_{I^+})$:
+	\begin{equation}\label{eq:pointwise-V}
+		V_n(x)-\tfrac12\Bigl[V_{n+1}\bigl(x-\tfrac{y_n}2\bigr)
+		+V_{n+1}\bigl(x+\tfrac{y_n}2\bigr)\Bigr]=0 .
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{Step 2: test functions and telescoping.}
+	Put $\psi_0:=\mathbf 1_{3J}$ and, recursively,
+	\[
+	\psi_{n+1}(u):=\tfrac12\Bigl[\psi_n\bigl(u+\tfrac{y_n}2\bigr)
+	+\psi_n\bigl(u-\tfrac{y_n}2\bigr)\Bigr].
+	\]
+	Thus $\psi_n=\mathbf 1_{3J}*\nu_n$, where $\nu_n$ is the law of
+	$S_n:=\sum_{k=0}^{n-1}\varsigma_k2^{-k-1}y_0$ with $(\varsigma_k)$ independent
+	symmetric signs. Consequently $0\le\psi_n\le1$, $\int_{\R}\psi_n=|3J|$, and
+	$\operatorname{supp}\nu_n\subseteq[-y_0,y_0]$, so that
+	\begin{equation}\label{eq:psi-lower}
+		\psi_n\ \ge\ \mathbf 1_J\qquad(n\ge0):
+	\end{equation}
+	indeed $x\in J$ and $|t|\le y_0\le|J|$ force $x-t\in J+[-|J|,|J|]=3J$.
+	
+	Multiplying \eqref{eq:pointwise} by $\psi_n\ge0$, integrating in $x$ over $\R$
+	and substituting $u=x\mp\tfrac{y_n}2$ in the two shifted terms yields
+	\[
+	\int\psi_nU_n-\int\psi_{n+1}U_{n+1}
+	\ \ge\ \frac12\int\psi_n\,\eps_h(\cdot,y_n)^2
+	\ \ge\ \frac12\int_J\eps_h(x,y_n)^2\,dx
+	\]
+	by \eqref{eq:psi-lower}. Summing over $0\le n\le N-1$,
+	\begin{equation}\label{eq:telescope}
+		\frac12\sum_{n=0}^{N-1}\int_J\eps_h(x,y_n)^2\,dx
+		\ \le\ \int\psi_0U_0-\int\psi_NU_N .
+	\end{equation}
+	All integrals here are finite, since each $\psi_n$ is bounded with compact
+	support and each $U_n$, $V_n$ is continuous.
+	
+	\medskip
+	\noindent\textit{Step 3: the linear part cancels exactly.}
+	Let $u_r:=\frac1{2r}\mathbf 1_{[-r,r]}$. Since
+	$V_n(x)=\frac1{2y_n}\int_{|x-t|\le y_n}\alpha(t)\,dt$ and $u_{y_n}$ is
+	symmetric, Fubini's theorem gives
+	\[
+	\int\psi_nV_n=\int\alpha\,\bigl(\psi_n*u_{y_n}\bigr)
+	=\int\alpha\,\bigl(\mathbf 1_{3J}*\nu_n*u_{y_n}\bigr).
+	\]
+	Now $u_{y_n}$ is the law of $y_nW$ with $W$ uniform on $[-1,1]$, and
+	$W\overset{d}{=}\sum_{j\ge1}\varsigma'_j2^{-j}$ for independent symmetric signs
+	$\varsigma'_j$ (this is the binary expansion of a uniform variable). Hence
+	$y_nW\overset{d}{=}\sum_{k\ge n}\varsigma'_{k-n+1}2^{-k-1}y_0$, and since $S_n$
+	and $y_nW$ are independent,
+	\[
+	S_n+y_nW\ \overset{d}{=}\ \sum_{k\ge0}\varsigma_k2^{-k-1}y_0
+	\ \overset{d}{=}\ \text{uniform on }[-y_0,y_0] .
+	\]
+	That is, $\nu_n*u_{y_n}=u_{y_0}$ for every $n\ge0$, and therefore
+	\begin{equation}\label{eq:cancel}
+		\int\psi_nV_n=\int\alpha\,\bigl(\mathbf 1_{3J}*u_{y_0}\bigr)=\int\psi_0V_0
+		\qquad(n\ge0).
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{Step 4: conclusion.}
+	By \eqref{eq:cancel}, the right-hand side of \eqref{eq:telescope} equals
+	\[
+	\int\psi_0(U_0-V_0)-\int\psi_N(U_N-V_N)\ \le\ \int\psi_0(U_0-V_0)
+	=\int_{3J}D_w\bigl(I(x,y_0)\bigr)\,dx ,
+	\]
+	because $U_N-V_N\ge0$ and $\psi_N\ge0$. Letting $N\to\infty$ in
+	\eqref{eq:telescope}, by monotone convergence, finishes the proof.
+\end{proof}
+
+\begin{corollary}[Carleson bound for $\eps_h$]\label{cor:eps-carleson}
+	\uses{def:D, lem:entropy}
+	\lean{eps_carleson_bound}
+	\leanok
+	For every bounded interval $J$,
+	\[
+	\iint_{Q_J}\eps_h(x,y)^2\,\frac{dx\,dy}{y}\ \le\ 6\log2\;E_h(J)\,|J| .
+	\]
+\end{corollary}
+
+\begin{proof}
+	The substitution $y=2^{-n}y_0$ maps
+	$\{(y_0,n):y_0\in(\tfrac{|J|}2,|J|],\ n\ge0\}$ bijectively onto $(0,|J|]$ and
+	preserves $\frac{dy}{y}$, distinct values of $n$ giving disjoint slabs. Hence
+	\[
+	\iint_{Q_J}\eps_h^2\,\frac{dx\,dy}{y}
+	=\int_{|J|/2}^{|J|}\Bigl[\sum_{n\ge0}\int_J\eps_h(x,2^{-n}y_0)^2\,dx\Bigr]
+	\frac{dy_0}{y_0} .
+	\]
+	Only $y_0\in(\tfrac{|J|}2,|J|]$ occurs, so by Lemma~\ref{lem:entropy} and
+	Definition~\ref{def:D} the bracket is at most $2|3J|E_h(J)=6E_h(J)|J|$ for
+	every such $y_0$; and $\int_{|J|/2}^{|J|}\frac{dy_0}{y_0}=\log2$.
+\end{proof}
+
+It remains to bound the entropy defect. Both bounds below are standard: the
+first is the $A_\infty$ hypothesis verbatim, the second is John--Nirenberg.
+
+\begin{lemma}[Two bounds for $E_h$]\label{lem:E-bounds}
+	\lean{entropy_bound_ainfty, entropy_bound_bmo}
+	\leanok
+	\begin{enumerate}
+		\item[\rm(a)] If $w$ satisfies {\rm(A2)}, i.e.\ $(w)_K\le A_0m_K$ for every
+		interval $K$, then $E_h(J)\le\log A_0$ for every bounded interval $J$.
+		\item[\rm(b)] There are universal constants $\eta_0>0$ and
+		$C_\ast\ge1$ such that, if $\eta:=\|\alpha\|_{\bmo(5J)}\le\eta_0$, then
+		$E_h(J)\le C_\ast\,\eta^2$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	(a) is immediate from $D_w(K)=\log\bigl((w)_K/m_K\bigr)\le\log A_0$.
+	
+	(b) If $x\in3J$ and $0<y_0\le|J|$ then $I(x,y_0)\subseteq3J+[-|J|,|J|]=5J$, so
+	it suffices to show $D_w(K)\le C_\ast\eta^2$ for every interval $K\subseteq5J$.
+	Put $s:=\alpha-\alpha_K$ on $K$, so that $\int_Ks=0$ and
+	$\|s\|_{\bmo(K)}\le\eta$. From $e^s\le1+s+\tfrac12s^2e^{|s|}$ and
+	Cauchy--Schwarz,
+	\[
+	\frac{(w)_K}{m_K}=\frac1{|K|}\int_Ke^{s}
+	\le1+\frac12\Bigl(\frac1{|K|}\int_Ks^4\Bigr)^{1/2}
+	\Bigl(\frac1{|K|}\int_Ke^{2|s|}\Bigr)^{1/2}.
+	\]
+	By the John--Nirenberg inequality there are universal $C_{\rm JN},c_{\rm JN}>0$
+	with $|\{t\in K:|s|>\lambda\}|\le C_{\rm JN}e^{-c_{\rm JN}\lambda/\eta}|K|$ for
+	all $\lambda>0$. Choose $\eta_0:=c_{\rm JN}/4$. Then $c_{\rm JN}/\eta\ge4$, so,
+	by the layer-cake formula,
+	\[
+	\frac1{|K|}\int_Ke^{2|s|}
+	\le1+2\int_0^\infty e^{2\lambda}C_{\rm JN}e^{-4\lambda}\,d\lambda
+	=1+C_{\rm JN},
+	\qquad
+	\frac1{|K|}\int_Ks^4
+	\le4C_{\rm JN}\int_0^\infty\lambda^3e^{-c_{\rm JN}\lambda/\eta}\,d\lambda
+	=\frac{24C_{\rm JN}}{c_{\rm JN}^4}\,\eta^4 .
+	\]
+	Hence $(w)_K/m_K\le1+C_\ast\eta^2$ with
+	$C_\ast:=\max\bigl\{1,\ \tfrac12\bigl(24C_{\rm JN}/c_{\rm JN}^4\bigr)^{1/2}
+	(1+C_{\rm JN})^{1/2}\bigr\}$, and therefore
+	$D_w(K)\le\log(1+C_\ast\eta^2)\le C_\ast\eta^2$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Beta-Number Carleson Estimate}\label{sec:beta-carl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The passage from Lemma~\ref{lem:tent2} to a Carleson estimate for $\beta_h$
+costs exactly one application of the $A_\infty$ condition, in the form (A1).
+
+\begin{definition}[Dyadic shift $\lambda_{n,j}$]\label{def:dyadicShift}
+	\lean{dyadicShift, dyadic_subinterval_eq}
+	\leanok
+	$\lambda_{n,j}:=-1+(2j+1)2^{-n}\in(-1,1)$, so that $L_{n,j}=I(x+\lambda_{n,j}y,2^{-n}y)$.
+\end{definition}
+
+\begin{lemma}[(A1) on a dyadic subinterval]\label{lem:a1_dyadic_ratio}
+	\uses{def:dyadicShift}
+	\lean{a1_dyadic_ratio}
+	\leanok
+	$|h(L_{n,j})|/|h(I)|=w(L_{n,j})/w(I)\le C_12^{-n\sigma}$.
+\end{lemma}
+\begin{proof}
+	This is the application of (A1) at the start of the proof of Theorem~\ref{thm:compare} below.
+\end{proof}
+
+\begin{lemma}[The pointwise bound behind Theorem (Comparison)]\label{lem:beta_sq_pointwise_bound}
+	\uses{lem:a1_dyadic_ratio, lem:tent2}
+	\lean{beta_sq_pointwise_bound}
+	\leanok
+	$\beta_h(x,y)^2\le\tfrac{C_1}8\sum_{n\ge0}2^{-n(1-\theta+\sigma)}\sum_{j=0}^{2^n-1}\eps_h(x+\lambda_{n,j}y,2^{-n}y)^2$.
+\end{lemma}
+\begin{proof}
+	This combines Lemma~\ref{lem:tent2} with the previous lemma, as in the proof of Theorem~\ref{thm:compare} below.
+\end{proof}
+
+\begin{lemma}[$\Xi_{n,j}$ preserves the Carleson measure]\label{lem:carlesonBoxIntegral_dyadicShift}
+	\uses{def:dyadicShift}
+	\lean{carlesonBoxIntegral_dyadicShift}
+	\leanok
+	$\Xi_{n,j}(x,y):=(x+\lambda_{n,j}y,2^{-n}y)$ is linear with Jacobian $2^{-n}$, preserves $dx\,dy/y$, and $\Xi_{n,j}(Q_J)\subseteq Q_{3J}$.
+\end{lemma}
+\begin{proof}
+	This is the change-of-variables argument in the proof of Theorem~\ref{thm:compare} below.
+\end{proof}
+
+\begin{lemma}[The geometric series of $C_2$]\label{lem:comparisonConst_geometric}
+	\lean{comparisonConst_geometric}
+	\leanok
+	$\sum_{n\ge0}2^n2^{-n(1-\theta+\sigma)}=\sum_{n\ge0}2^{-n\sigma/2}=(1-2^{-\sigma/2})^{-1}$, giving $C_2=C_1/(8(1-2^{-\sigma/2}))$.
+\end{lemma}
+\begin{proof}
+	This is the geometric summation closing the proof of Theorem~\ref{thm:compare} below.
+\end{proof}
+
+\begin{theorem}[Comparison]\label{thm:compare}
+	\uses{lem:tent2, lem:beta_sq_pointwise_bound, lem:carlesonBoxIntegral_dyadicShift, lem:comparisonConst_geometric}
+	\lean{compare_beta_eps}
+	\leanok
+	Let $w=h'\in A_\infty(\R)$, with $C_1,\sigma$ as in {\rm(A1)}. Then for every
+	bounded interval $J$,
+	\[
+	\iint_{Q_J}\beta_h(x,y)^2\,\frac{dx\,dy}{y}
+	\ \le\ C_2\iint_{Q_{3J}}\eps_h(x,y)^2\,\frac{dx\,dy}{y},
+	\qquad
+	C_2:=\frac{C_1}{8\bigl(1-2^{-\sigma/2}\bigr)} .
+	\]
+\end{theorem}
+
+\begin{proof}
+	Fix $\theta:=\sigma/2\in(0,\tfrac12]$, let $(x,y)\in Q_J$ and write
+	$I=I(x,y)$. The intervals of $\calT_n(I)$ are
+	\[
+	L_{n,j}=I\bigl(x+\lambda_{n,j}\,y,\ 2^{-n}y\bigr),\qquad
+	\lambda_{n,j}:=-1+(2j+1)2^{-n}\in(-1,1),\qquad 0\le j<2^{n},
+	\]
+	since $L_{n,j}$ has half-length $2^{-n}y$ and centre $x-y+(2j+1)2^{-n}y$. By
+	(A1),
+	\[
+	\frac{|h(L_{n,j})|}{|h(I)|}=\frac{w(L_{n,j})}{w(I)}\le C_1 2^{-n\sigma},
+	\]
+	so Lemma~\ref{lem:tent2} gives the pointwise bound
+	\[
+	\beta_h(x,y)^2\ \le\ \frac{C_1}{8}\sum_{n\ge0}2^{-n(1-\theta+\sigma)}
+	\sum_{j=0}^{2^{n}-1}\eps_h\bigl(x+\lambda_{n,j}y,\ 2^{-n}y\bigr)^2 .
+	\]
+	For fixed $n,j$ the map $\Xi_{n,j}(x,y):=(x+\lambda_{n,j}y,\,2^{-n}y)$ is
+	linear with Jacobian determinant $2^{-n}$, hence preserves the measure
+	$\frac{dx\,dy}{y}$; moreover $\Xi_{n,j}(Q_J)\subseteq Q_{3J}$, because
+	$|\lambda_{n,j}y|\le y\le|J|$ and $2^{-n}y\le|J|\le|3J|$. Therefore
+	\[
+	\iint_{Q_J}\eps_h\bigl(\Xi_{n,j}(x,y)\bigr)^2\frac{dx\,dy}{y}
+	\ \le\ \iint_{Q_{3J}}\eps_h^2\,\frac{dx\,dy}{y}=:\mathcal E .
+	\]
+	Summing, and noting that the inner sum has $2^n$ terms,
+	\[
+	\iint_{Q_J}\beta_h^2\,\frac{dx\,dy}{y}
+	\le\frac{C_1}{8}\,\mathcal E\sum_{n\ge0}2^{n}2^{-n(1-\theta+\sigma)}
+	=\frac{C_1}{8}\,\mathcal E\sum_{n\ge0}2^{-n\sigma/2}=C_2\,\mathcal E . \qedhere
+	\]
+\end{proof}
+
+\begin{lemma}[Part (C): uniform bound]\label{lem:beta_carleson_uniform_bound}
+	\uses{thm:compare, cor:eps-carleson, lem:E-bounds}
+	\lean{beta_carleson_uniform_bound}
+	$V_*\le(18\log2\,C_2\log A_0)^{1/2}<\infty$.
+\end{lemma}
+\begin{proof}
+	This is part (C) in the proof of Theorem~\ref{thm:beta-carleson} below.
+\end{proof}
+
+\begin{lemma}[Part (V): vanishing bound]\label{lem:beta_carleson_vanishing_bound}
+	\uses{thm:compare, lem:E-bounds}
+	\lean{beta_carleson_vanishing_bound}
+	If $\omega_\alpha(15|J|)\le\eta_0$, $\|\beta_h\|_{T^2(J)}^2\le18\log2\,C_2C_*\,\omega_\alpha(15|J|)^2$.
+\end{lemma}
+\begin{proof}
+	This is part (V) in the proof of Theorem~\ref{thm:beta-carleson} below.
+\end{proof}
+
+\begin{theorem}[Beta-number Carleson estimate]\label{thm:beta-carleson}
+	\uses{cor:eps-carleson, lem:E-bounds, thm:compare, lem:beta_carleson_uniform_bound, lem:beta_carleson_vanishing_bound}
+	\lean{beta_carleson_master, beta_carleson_uniform, beta_carleson_vanishing}
+	Let $h$ be an increasing, locally absolutely continuous homeomorphism of $\R$
+	with $h'=w\in A_\infty(\R)$. Then for every bounded interval $J$,
+	\begin{equation}\label{eq:beta-master}
+		\|\beta_h\|_{T^2(J)}^2\ \le\ 18\log2\;C_2\;E_h(3J).
+	\end{equation}
+	Consequently:
+	\begin{enumerate}
+		\item[\rm(C)] $\displaystyle V_*=\sup_J\|\beta_h\|_{T^2(J)}
+		\le\bigl(18\log2\;C_2\log A_0\bigr)^{1/2}<\infty$; that is,
+		$\beta_h(x,y)^2\frac{dx\,dy}{y}$ is a Carleson measure on $\U$, with constant
+		depending only on $[w]_{A_\infty}$.
+		\item[\rm(V)] If moreover $\alpha=\log w\in\vmo(\R)$, then, with
+		$\omega_\alpha(r)=\sup_{|K|\le r}\|\alpha\|_{\bmo(K)}$,
+		\[
+		\|\beta_h\|_{T^2(J)}^2\ \le\ 18\log2\;C_2C_\ast\ \omega_\alpha(15|J|)^2
+		\qquad\text{whenever }\omega_\alpha(15|J|)\le\eta_0,
+		\]
+		uniformly in the position of $J$. Hence
+		$V(r)=\sup_{|I|\le r}\|\beta_h\|_{T^2(I)}\to0$ as $r\to0$, and
+		$\beta_h(x,y)^2\frac{dx\,dy}{y}\in\cm_0(\U)$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	By Theorem~\ref{thm:compare} and Corollary~\ref{cor:eps-carleson} applied to
+	the interval $3J$,
+	\[
+	\frac1{|J|}\iint_{Q_J}\beta_h^2\frac{dx\,dy}{y}
+	\le\frac{C_2}{|J|}\iint_{Q_{3J}}\eps_h^2\frac{dx\,dy}{y}
+	\le\frac{C_2}{|J|}\cdot6\log2\,E_h(3J)\,|3J|
+	=18\log2\;C_2\,E_h(3J),
+	\]
+	which is \eqref{eq:beta-master}. Part (C) follows from
+	Lemma~\ref{lem:E-bounds}(a), the resulting bound being independent of $J$. For
+	(V), note that $E_h(3J)$ involves only the intervals $I(x,y_0)$ with $x\in9J$
+	and $y_0\le3|J|$, all of which are contained in $15J$; so
+	Lemma~\ref{lem:E-bounds}(b), applied to $3J$ in place of $J$, gives
+	$E_h(3J)\le C_\ast\|\alpha\|^2_{\bmo(15J)}\le C_\ast\omega_\alpha(15|J|)^2$ as
+	soon as $\omega_\alpha(15|J|)\le\eta_0$. Since $\alpha\in\vmo(\R)$ means
+	$\omega_\alpha(r)\to0$ as $r\to0$ uniformly in the position of the interval,
+	the right-hand side tends to $0$ as $|J|\to0$. Together with (C), this is
+	precisely $\beta_h^2\frac{dx\,dy}{y}\in\cm_0(\U)$.
+\end{proof}
+
+\begin{remark}[Why the previous route required $\RH_2$]\label{rem:why-rh2}
+	A natural approach is to bound $\beta_h$ by the Dorronsoro affine approximation
+	number $\gamma_1(h;x,y)=y^{-2}\inf_A\int_{I(x,y)}|h-A|$, for which one has the
+	exact identity $\beta_h(x,y)=\gamma_1(h;x,y)/\bigl(4(w)_{I(x,y)}\bigr)$, and
+	then to invoke Dorronsoro's square-function estimate \cite{Do},
+	\cite[Thm.~1.42]{DS}, in the localised form
+	$\iint_{Q_K}\gamma_1(h)^2\frac{dx\,dy}{y}\le C\int_{3K}|w-c|^2\,dt$. This forces
+	$w\in L^2_{\mathrm{loc}}$ with scale-invariant control, i.e.\ the reverse
+	H\"older inequality $\RH_2$, which a general $A_\infty$-weight need not satisfy
+	(only $\RH_{1+\delta}$ for some $\delta>0$ is available). Passing to the
+	exponent $p=1+\delta$ does not help: the estimate
+	$\iint\gamma_1(f)^p\frac{dx\,dt}{t}\lesssim\|f'\|_{L^p}^p$ is \emph{false} for
+	$p<2$, because $\gamma_1(f;\cdot,2^{-j})$ behaves like a single
+	Littlewood--Paley block of $f'$, and $L^p(\ell^p)$ is not controlled by $L^p$
+	when $p<2$ (take $f'=\sum_{j\le N}\cos(2^jx)$ on $[0,1]$: the left side is of
+	order $N$ while $\|f'\|_{L^p}^p$ is of order $N^{p/2}$). The route taken above
+	avoids $L^2$ theory altogether: Lemma~\ref{lem:tent} replaces Dorronsoro's
+	estimate by an exact expansion, and Lemma~\ref{lem:entropy} replaces the
+	reverse H\"older inequality by the arithmetic--geometric mean defect, which is
+	bounded by the $A_\infty$ constant \emph{by definition}.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\texorpdfstring{The Affine Deviation $\Theta_h$ and the Proof of Theorem~\ref{thm:main}}{The Affine Deviation Theta_h and the Proof of the Main Theorem}}\label{sec:theta}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\texorpdfstring{From $\beta_h$ to $\Theta_h$}{From beta_h to Theta_h}}
+
+Recall from Definition~\ref{def:theta} that
+$\Theta_h(x,y)=\sum_{k\ge0}4^{-k}\beta_h(x,2^ky)$.
+
+\begin{lemma}[Minkowski's inequality for $\Theta_h$]\label{lem:T2norm_theta_le}
+	\uses{def:theta}
+	\lean{T2norm_theta_le, T2norm_scale_identity}
+	$\|\Theta_h\|_{T^2(J)}\le\sum_{k\ge0}4^{-k}\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}$, and $\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}^2=|J|^{-1}\int_J\int_0^{2^k|J|}\beta_h(x,Y)^2\,dxdY/Y$.
+\end{lemma}
+\begin{proof}
+	This is eq.~\eqref{eq:scale-id-new} and the preceding Minkowski step in the proof of Theorem~\ref{thm:theta-new} below.
+\end{proof}
+
+\begin{lemma}[Head estimate]\label{lem:T2norm_head_bound}
+	\uses{lem:T2norm_theta_le}
+	\lean{T2norm_head_bound}
+	$\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}^2\le2^kV(2^k|J|)^2$.
+\end{lemma}
+\begin{proof}
+	This is eq.~\eqref{eq:head-new} in the proof of Theorem~\ref{thm:theta-new} below.
+\end{proof}
+
+\begin{lemma}[Tail estimate]\label{lem:T2norm_tail_bound}
+	\uses{lem:T2norm_theta_le, lem:crude-beta}
+	\lean{T2norm_tail_bound}
+	$\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}\le\|\beta_h\|_{T^2(J)}+\sqrt{k\log2}$.
+\end{lemma}
+\begin{proof}
+	This is eq.~\eqref{eq:tail-new} in the proof of Theorem~\ref{thm:theta-new} below.
+\end{proof}
+
+\begin{lemma}[Combining the head and tail estimates]\label{lem:T2norm_theta_split}
+	\uses{lem:T2norm_head_bound, lem:T2norm_tail_bound}
+	\lean{sum_geometric_sqrt, T2norm_theta_split}
+	$\sum_{k>K}4^{-k}\sqrt k\le C_44^{-K}\sqrt K$, and $\|\Theta_h\|_{T^2(J)}\le C_3V(2^K|J|)+\tfrac134^{-K}V(|J|)+C_4\sqrt{\log2}\,4^{-K}\sqrt K$.
+\end{lemma}
+\begin{proof}
+	This is eq.~\eqref{eq:theta-final-new}, combining eq.~\eqref{eq:head-new} for $k\le K$ with eq.~\eqref{eq:tail-new} for $k>K$, in the proof of Theorem~\ref{thm:theta-new} below.
+\end{proof}
+
+\begin{lemma}[Carleson propagation]\label{lem:T2norm_theta_propagation}
+	\uses{lem:T2norm_tail_bound}
+	\lean{T2norm_theta_propagation}
+	$\|\Theta_h\|_{T^2(J)}\le\tfrac43\|\beta_h\|_{T^2(J)}+C_5$.
+\end{lemma}
+\begin{proof}
+	This is the Carleson boundedness step closing the proof of Theorem~\ref{thm:theta-new} below.
+\end{proof}
+
+\begin{theorem}\label{thm:theta-new}
+	\uses{def:theta, lem:crude-beta, lem:tent, thm:beta-carleson, lem:T2norm_theta_split, lem:T2norm_theta_propagation}
+	\lean{theta_carleson}
+	Let $h$ be an increasing, locally absolutely continuous homeomorphism of $\R$
+	with $h'\in A_\infty(\R)$ and $\log h'\in\vmo(\R)$. Then
+	\[
+	\sup_J\|\Theta_h\|_{T^2(J)}<\infty
+	\qquad\text{and}\qquad
+	\|\Theta_h\|_{T^2(J)}\longrightarrow0\quad(|J|\to0),
+	\]
+	uniformly in the position of $J$; that is,
+	$\Theta_h^2\frac{dx\,dy}{y}\in\cm_0(\U)$.
+\end{theorem}
+
+\begin{proof}
+	Only the two inputs (V), (C) of \eqref{eq:two-inputs} and the bound
+	$\beta_h\le1$ of Lemma~\ref{lem:crude-beta} are used; all three are available by
+	Theorem~\ref{thm:beta-carleson} and Lemma~\ref{lem:tent}. Set
+	\[
+	V(r):=\sup_{|I|\le r}\|\beta_h\|_{T^2(I)},\qquad
+	V_*:=\sup_{r>0}V(r)<\infty ,
+	\]
+	a nondecreasing function with $V(r)\to0$ as $r\to0$. By Minkowski's inequality
+	and Definition~\ref{def:theta},
+	\[
+	\|\Theta_h\|_{T^2(J)}\le\sum_{k\ge0}4^{-k}\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)},
+	\]
+	and the change of variables $Y=2^ky$ (so that $dY/Y=dy/y$) gives
+	\begin{equation}\label{eq:scale-id-new}
+		\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}^2
+		=\frac1{|J|}\int_J\int_0^{2^k|J|}\beta_h(x,Y)^2\,\frac{dx\,dY}{Y}.
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{Two estimates at one scale.}
+	Let $J_k$ be the interval concentric with $J$ of length $2^k|J|$. Since
+	$\{(x,Y):x\in J,\ 0<Y\le2^k|J|\}\subseteq Q_{J_k}$,
+	\begin{equation}\label{eq:head-new}
+		\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}^2
+		\le\frac1{|J|}\iint_{Q_{J_k}}\beta_h^2\,\frac{dx\,dY}{Y}\le2^kV(2^k|J|)^2 .
+	\end{equation}
+	Alternatively, splitting the inner integral of \eqref{eq:scale-id-new} at
+	$Y=|J|$, the part over $0<Y\le|J|$ is exactly $\|\beta_h\|_{T^2(J)}^2$, while
+	$\beta_h\le1$ bounds the remaining part by $\int_{|J|}^{2^k|J|}\frac{dY}{Y}
+	=k\log2$; hence
+	\begin{equation}\label{eq:tail-new}
+		\|\beta_h(\cdot,2^k\cdot)\|_{T^2(J)}\le\|\beta_h\|_{T^2(J)}+\sqrt{k\log2}\, .
+	\end{equation}
+	
+	\medskip
+	\noindent\textit{Vanishing.}
+	Let $K\ge1$ be an integer. Using \eqref{eq:head-new} for $k\le K$,
+	\eqref{eq:tail-new} for $k>K$, the monotonicity of $V$, and
+	$\sum_{k>K}4^{-k}\sqrt k\le C_4\,4^{-K}\sqrt K$ (valid for $K\ge1$, with $C_4$
+	absolute), we obtain
+	\begin{equation}\label{eq:theta-final-new}
+		\|\Theta_h\|_{T^2(J)}\le C_3\,V(2^K|J|)+\tfrac13\,4^{-K}V(|J|)
+		+C_4\sqrt{\log2}\;4^{-K}\sqrt K,\qquad C_3:=\sum_{k\ge0}2^{-3k/2}<\infty .
+	\end{equation}
+	Given $\varepsilon>0$, first choose $K$ with
+	$C_4\sqrt{\log2}\,4^{-K}\sqrt K<\varepsilon/3$; then, $K$ being fixed, use
+	$V(r)\to0$ to choose $\delta>0$ with $C_3V(2^K\delta)<\varepsilon/3$ and
+	$\tfrac13 4^{-K}V(\delta)<\varepsilon/3$. For $|J|<\delta$ each of the three
+	terms in \eqref{eq:theta-final-new} is $<\varepsilon/3$, so
+	$\|\Theta_h\|_{T^2(J)}<\varepsilon$.
+	
+	\medskip
+	\noindent\textit{Carleson boundedness.}
+	Applying \eqref{eq:tail-new} for every $k\ge0$ gives the propagation inequality
+	\[
+	\|\Theta_h\|_{T^2(J)}\le\sum_{k\ge0}4^{-k}
+	\bigl(\|\beta_h\|_{T^2(J)}+\sqrt{k\log2}\bigr)
+	=\tfrac43\|\beta_h\|_{T^2(J)}+C_5,\qquad
+	C_5:=\sqrt{\log2}\sum_{k\ge0}4^{-k}\sqrt k<\infty ,
+	\]
+	so that $\sup_J\|\Theta_h\|_{T^2(J)}\le\tfrac43V_*+C_5<\infty$. Combined with
+	the vanishing just proved, $\Theta_h^2\frac{dx\,dy}{y}\in\cm_0(\U)$.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:main}}\label{ss:proof-main}
+
+\begin{lemma}[A domination principle]\label{lem:isVanishingCarleson_of_le}
+	\lean{isVanishingCarleson_of_le}
+	\leanok
+	If $|F|\le C\,G$ pointwise and $G^2\,dxdy/y\in\cm_0(\U)$, then $F^2\,dxdy/y\in\cm_0(\U)$.
+\end{lemma}
+\begin{proof}
+	Immediate from the definitions of $\cm(\U)$ and $\cm_0(\U)$.
+\end{proof}
+
+\begin{lemma}[$SS(\R)\subset\mathrm{QS}$]\label{lem:ainfty_imp_quasisymmetric}
+	\lean{ainfty_imp_quasisymmetric}
+	An $A_\infty$ derivative makes $f$ doubling, hence $f\in SS(\R)$ is $\rho$-quasisymmetric for some $\rho$.
+\end{lemma}
+\begin{proof}
+	See \cite{Jon}, \cite{HS}, cited at the start of the proof of Theorem~\ref{thm:main} below.
+\end{proof}
+
+\begin{lemma}[Uniform bound $\|\mu_{e(f)}\|_\infty<1$]\label{lem:ss_dilatation_sup_lt_one}
+	\uses{lem:ainfty_imp_quasisymmetric}
+	\lean{ss_dilatation_sup_lt_one}
+	For $f\in SS(\R)$, $e(f)$ is quasiconformal, so $\|\mu_{e(f)}\|_\infty<1$.
+\end{lemma}
+\begin{proof}
+	Since $e(f)$ is quasiconformal, as noted in the proof of Theorem~\ref{thm:main} below.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+	Let $f\in\ssr(\R)$. By definition $f$ is locally absolutely continuous,
+	$f'\in A_\infty(\R)$ and $\log f'\in\vmo(\R)$; in particular $f$ is strongly
+	quasisymmetric, hence $\rho$-quasisymmetric for some $\rho$, so that the
+	barycentric extension $e(f)$ is quasiconformal and
+	Proposition~\ref{prop:forward-to-theta} applies with $h=f$:
+	\[
+	|\mu_{e(f)}(x+iy)|\ \le\ C(\rho)\,\Theta_f(x,y),\qquad x+iy\in\U .
+	\]
+	(Only quasisymmetry is used there: the forward inequality
+	Theorem~\ref{thm:forward}, the localisation estimates
+	Lemma~\ref{lem:de-loc} and Corollary~\ref{cor:real-loc}, the denominator bounds
+	of Lemma~\ref{lem:denom}, and the telescoping Lemma~\ref{lem:delta-beta-new}
+	all hold for an arbitrary $\rho$-quasisymmetric $h$.)
+	
+	By Theorem~\ref{thm:theta-new}, $\Theta_f^2\frac{dx\,dy}{y}\in\cm_0(\U)$.
+	Squaring the pointwise bound and integrating over a Carleson box $Q_J$,
+	\[
+	\frac1{|J|}\iint_{Q_J}|\mu_{e(f)}(x+iy)|^2\frac{dx\,dy}{y}
+	\ \le\ C(\rho)^2\,\|\Theta_f\|_{T^2(J)}^2 ,
+	\]
+	whose supremum over all intervals $J$ is finite and which tends to $0$ as
+	$|J|\to0$, uniformly in the position of $J$. Hence
+	$|\mu_{e(f)}(z)|^2\frac{dx\,dy}{y}$ is a vanishing Carleson measure, i.e.\
+	$\mu_{e(f)}\in\calL_0(\U)$. Since $e(f)$ is quasiconformal we have
+	$\|\mu_{e(f)}\|_\infty<1$, i.e.\ $\mu_{e(f)}\in M(\U)$, and therefore
+	\[
+	\mu_{e(f)}\in\calM_0(\U)=M(\U)\cap\calL_0(\U).
+	\]
+	This proves Theorem~\ref{thm:main} for every $f\in\ssr(\R)$, with no auxiliary
+	bi-Lipschitz, reverse H\"older or uniform continuity assumption.
+\end{proof}
+
+\begin{remark}
+	The two hypotheses in the definition of $\ssr(\R)$ are used in exactly one
+	place each, and the proof shows why neither can be dispensed with.
+	$\log f'\in\vmo(\R)$ makes the entropy defect $E_f(J)$ tend to $0$ with $|J|$
+	(Lemma~\ref{lem:E-bounds}(b)); this is the vanishing. $f'\in A_\infty(\R)$
+	makes $E_f(J)$ bounded at \emph{all} scales (Lemma~\ref{lem:E-bounds}(a)) and
+	supplies the decay exponent $\sigma$ of Theorem~\ref{thm:compare}; this is the
+	Carleson boundedness. Without the second, the crude bound $\beta_f\le1$ gives
+	only $\|\beta_f\|_{T^2(J)}^2\lesssim\log(|J|/r_0)$ at large scales.
+\end{remark}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Concluding Remarks}\label{sec:concl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{remark}[Structure of the argument]
+	It may be worth separating the two halves of the proof. Sections
+	\ref{sec:normal}--\ref{sec:beta-theta} are geometric and use only that $f$ is
+	quasisymmetric: the forward inequality, the compactness of normalized families,
+	the localization of the Douady--Earle extension, and the telescoping estimate
+	combine to give $|\mu_{e(f)}(z)|\le C(\rho)\Theta_f(x,y)$ for every
+	$\rho$-quasisymmetric $f$. Sections \ref{sec:tent}--\ref{sec:theta} are
+	harmonic-analytic and use only the two hypotheses on $f'$. Any improvement of
+	either half is independent of the other.
+\end{remark}
+
+\begin{remark}[On the analytic input]
+	The estimate of Theorem~\ref{thm:beta-carleson} is the ``$\bmo$-level''
+	statement of the theory of chord-arc curves and $A_\infty$-weights: after the
+	affine renormalisation of the pair $(|I|,|h(I)|)$, $\beta_h$ is the
+	$L^1$-flatness coefficient of the curve associated with $h$, and $h'\in
+	A_\infty$ is Semmes' condition for that curve to be chord-arc; see \cite{Se}
+	and \cite[Ch.~I]{DS}. It can therefore also be deduced from that theory. The
+	proof given in \S\S\ref{sec:tent}--\ref{sec:beta-carl} is preferred here
+	because it is quantitative, elementary, and yields the vanishing statement (V)
+	and the uniform bound (C) by one and the same argument.
+\end{remark}
+
+\begin{remark}[An alternative route]
+	One may instead quote the uniform bound one level further downstream, at the
+	level of the dilatation itself: it is known that if $f'\in A_\infty(\R)$
+	(equivalently, $f$ belongs to the $\bmo$-Teichm\"uller class) then
+	$\mu_{e(f)}\in\calM(\U)$; see \cite{Cu}, \cite{SW}, \cite{TWS} for the disk and
+	\cite{Sh}, \cite{WM3} for the real line. Combined with the vanishing estimate
+	of Theorem~\ref{thm:beta-carleson}(V), this also yields
+	Theorem~\ref{thm:main}. We have preferred the self-contained route, whose analytic
+	part (\S\S\ref{sec:tent}--\ref{sec:beta-carl}) uses nothing beyond Jensen's
+	inequality, the Cauchy--Schwarz inequality, the John--Nirenberg inequality and
+	the definition of $A_\infty$; the geometric part
+	(\S\S\ref{sec:normal}--\ref{sec:beta-theta}) uses in addition only the
+	Beurling--Ahlfors extension, the classical compactness theorem for
+	quasiconformal mappings with a three-point normalization, and the basic
+	properties of the Douady--Earle extension.
+\end{remark}
+
+\begin{remark}[Comparison with the disk]
+	On the unit disk the analogous theorem was obtained by Shen--Wei \cite{SW} and
+	Tang--Wei--Shen \cite{TWS} through the compactness of $\vmo(\Sone)$. That
+	compactness is not available on $\R$, and the present argument replaces it by
+	the two quantitative bounds of Lemma~\ref{lem:E-bounds}: the $A_\infty$
+	constant controls the entropy defect at all scales, and the local $\bmo$
+	modulus controls it at small scales.
+\end{remark}
+\begin{thebibliography}{99}
+
+\bibitem{Ah} L. V. Ahlfors, \textit{Lectures on Quasiconformal Mappings}, 2nd ed., Univ. Lecture Ser., vol.~38, Amer. Math. Soc., Providence, RI, 2006.
+
+\bibitem{BA} A. Beurling and L. V. Ahlfors, \textit{The boundary correspondence under quasiconformal mappings}, Acta Math. \textbf{96} (1956), 125--142.
+
+\bibitem{CF} R. R. Coifman and C. Fefferman, \textit{Weighted norm inequalities for maximal functions and singular integrals}, Studia Math. \textbf{51} (1974), 241--250.
+
+\bibitem{Cu} G. Cui, \textit{Integrably asymptotic affine homeomorphisms of the circle and Teichm\"uller spaces}, Sci. China Ser. A \textbf{43} (2000), 267--279.
+
+\bibitem{DE} A. Douady and C. J. Earle, \textit{Conformally natural extension of homeomorphisms of the circle}, Acta Math. \textbf{157} (1986), 23--48.
+
+\bibitem{DS} G. David and S. Semmes, \textit{Analysis of and on Uniformly Rectifiable Sets}, Math. Surveys Monogr., vol.~38, Amer. Math. Soc., Providence, RI, 1993.
+
+\bibitem{Do} J. R. Dorronsoro, \textit{A characterization of potential spaces}, Proc. Amer. Math. Soc. \textbf{95} (1985), 21--31.
+
+\bibitem{Gar} J. B. Garnett, \textit{Bounded Analytic Functions}, Academic Press, New York, 1981.
+
+\bibitem{GR} J. Garc\'ia-Cuerva and J. L. Rubio de Francia, \textit{Weighted Norm Inequalities and Related Topics}, North-Holland Math. Stud., vol.~116, North-Holland, Amsterdam, 1985.
+
+\bibitem{HS} Y. Hu and Y. Shen, \textit{On quasisymmetric homeomorphisms}, Israel J. Math. \textbf{191} (2012), 209--226.
+
+\bibitem{Jon} P. W. Jones, \textit{Homeomorphisms of the line which preserve BMO}, Ark. Mat. \textbf{21} (1983), 229--231.
+
+\bibitem{LV} O. Lehto and K. I. Virtanen, \textit{Quasiconformal Mappings in the Plane}, 2nd ed., Grundlehren Math. Wiss., vol.~126, Springer, New York, 1973.
+
+\bibitem{Sar} D. Sarason, \textit{Functions of vanishing mean oscillation}, Trans. Amer. Math. Soc. \textbf{207} (1975), 391--405.
+
+\bibitem{Se} S. Semmes, \textit{Quasiconformal mappings and chord-arc curves}, Trans. Amer. Math. Soc. \textbf{306} (1988), 233--263.
+
+\bibitem{Sh} Y. Shen, \textit{VMO-Teichm\"uller space on the real line}, Ann. Fenn. Math. \textbf{47} (2022), 57--82.
+
+\bibitem{SW} Y. Shen and H. Wei, \textit{Universal Teichm\"uller space and BMO}, Adv. Math. \textbf{234} (2013), 129--148.
+
+\bibitem{TWS} S. Tang, H. Wei and Y. Shen, \textit{On Douady--Earle extension and the contractibility of the VMO-Teichm\"uller space}, J. Math. Anal. Appl. \textbf{442} (2016), 376--384.
+
+\bibitem{WM} H. Wei and K. Matsuzaki, \textit{Strongly symmetric homeomorphisms on the real line with uniform continuity}, Indiana Univ. Math. J., to appear; arXiv:2207.10468.
+
+\bibitem{WM3} H. Wei and K. Matsuzaki, \textit{Beurling--Ahlfors extension by heat kernel, $A_\infty$-weights for VMO, and vanishing Carleson measures}, Bull. London Math. Soc. \textbf{53} (2021), 723--739.
+
+\bibitem{WQ} Y. Wu and Y. Qi, \textit{Douady--Earle extension of the strongly symmetric homeomorphism}, Kodai Math. J. \textbf{39} (2016), no.~2, 410--424.
+
+\end{thebibliography}
