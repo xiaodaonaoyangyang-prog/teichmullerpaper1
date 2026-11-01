@@ -7,7 +7,7 @@
    "manifestFile": "lake-manifest.json",
    "inherited": false,
    "dir":
-   "D:/lean/upgrade436/Conformally_natural_extension_of_homeomorphisms_of_the_circle",
+   "D:/lean/Conformally_natural_extension_of_homeomorphisms_of_the_circle",
    "copy": false,
    "configFile": "lakefile.toml"},
   {"url": "https://github.com/leanprover/doc-gen4",
@@ -43,7 +43,7 @@
    "name": "lizhong_quasiconformal_teichmuller",
    "manifestFile": "lake-manifest.json",
    "inherited": true,
-   "dir": "D:/lean/upgrade436/lizhong_quasiconformal_teichmuller",
+   "dir": "D:/lean/lizhong_quasiconformal_teichmuller",
    "copy": false,
    "configFile": "lakefile.toml"},
   {"url": "https://github.com/leanprover/leansqlite",
