@@ -30,8 +30,8 @@ theorem VanishingCarleson.main_theorem (f : ℝ → ℝ) (hf : StronglySymmetric
 
 ## 构建
 
-* 工具链 `leanprover/lean4:v4.35.0-rc2`；mathlib 为共享检出
-  `D:/lean/mathlib4-latest`（与 `DouadyEarleExt`、Li Zhong 项目共用同一份构建）。
+* 工具链 `leanprover/lean4:v4.36.0-rc2`；mathlib 为共享检出（tag `v4.36.0-rc2`，commit `9d581dff`）
+  `D:/lean/mathlib4-v436rc2`（与 `DouadyEarleExt`、Li Zhong 项目共用同一份构建）。
 * 路径依赖 `douady_earle`（Douady–Earle 圆盘扩张），它又路径依赖
   `D:/lean/lizhong_quasiconformal_teichmuller`。
 * `lake build`。完整构建约 6 分钟（mathlib 与依赖已构建时）。
